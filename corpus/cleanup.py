@@ -77,6 +77,7 @@ def split_into_sentences(line):
         if is_terminator(c):
             # close current token
             if not tokens: continue
+            close_token(en_token)
             tokens.append(c)
             yield tokens
             tokens = []
