@@ -66,7 +66,6 @@ def is_terminator(ch):
 
 def split_into_sentences(line):
     tokens = []
-    zh_token = []
     en_token = []
 
     def close_token(token):
@@ -85,11 +84,10 @@ def split_into_sentences(line):
             close_token(en_token)
             tokens.append(c)
         elif is_zh(c):
-            if en_token:
-                close_token(en_token)
+            close_token(en_token)
             tokens.append(c)
         elif c == u' ' or c == u'\t':
-            continue
+            close_token(en_token)
         else:
             en_token.append(c)
     if tokens:
