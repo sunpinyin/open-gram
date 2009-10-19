@@ -44,7 +44,10 @@ def is_zh(ch):
 def is_punct(ch):
     x = ord(ch)
     # in no-formal literals, space is used as punctuation sometimes.
-    if x < 127 and (ascii.ispunct(x) or ascii.isblank(x)):
+    if x < 127 and ascii.ispunct(x):
+        return True
+    # General Punctuation
+    elif 0x2000 <= x <= 0x206f:
         return True
     # CJK Symbols and Punctuation
     elif 0x3000 <= x <= 0x303f:
@@ -70,38 +73,24 @@ def split_into_sentences(line):
         if token:
             tokens.append(''.join(token))
             del(token[:])
-
-    def get_current_token():
-        if zh_token:
-            return zh_token
-        elif en_token:
-            return en_token
-        else:
-            return None
         
     for c in line:
         if is_terminator(c):
             # close current token
-            cur_token = get_current_token()
-            if cur_token is None:
-                continue
-            cur_token.append(c)
-            close_token(cur_token)
+            if not tokens: continue
+            tokens.append(c)
             yield tokens
             tokens = []
         elif is_punct(c):
-            cur_token = get_current_token()
-            if cur_token is None:
-                continue
-            close_token(cur_token)
+            close_token(en_token)
             tokens.append(c)
         elif is_zh(c):
             if en_token:
                 close_token(en_token)
-            zh_token.append(c)
+            tokens.append(c)
+        elif c == u' ' or c == u'\t':
+            continue
         else:
-            if zh_token:
-                close_token(zh_token)
             en_token.append(c)
     if tokens:
         yield tokens
