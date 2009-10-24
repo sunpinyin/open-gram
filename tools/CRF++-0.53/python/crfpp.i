@@ -1,4 +1,4 @@
-%module CRFPP
+%module crfpp
 %include exception.i
 %{
 #include "crfpp.h"
