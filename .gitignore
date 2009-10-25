@@ -1,3 +1,11 @@
 .gitignore
+GPATH
+GRTAGS
+GSYMS
+GTAGS
 *~
 *.pyc
+*.o
+*.lo
+*.la
+*.log
