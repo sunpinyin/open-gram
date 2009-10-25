@@ -29,18 +29,22 @@ class BlockedException(Exception):
 class SearchEngine(object):
     def choose_ip(self):
         # TODO: should be round-robin, and mark those banned IPs with lower priority
-        ip = random.choice(filter(lambda ip: self.ips[ip] == 0, self.ips))
+        return random.choice(filter(lambda ip: self.ips[ip] == 0, self.ips))
 
+    def remove_ip(self, ip):
+        self.ips[ip] = 1
+        
     def is_miss(self, result):
         return self.re_miss.search(lines) is not None
 
     def get_freq(self, result):
-        match = self.re_hit.findall (result)
-        if not match:
+        match = self.re_hit.findall(result)
+        if match:
+            return int (match[0].replace(',', ''))
+        else:
             # could be search engine's suggestion or 
             # it just banned me
             return 0
-        freq = int (match[0].replace(',', ''))
         
 class Baidu(SearchEngine):
     url = "http://%s/s?%s"
@@ -60,7 +64,7 @@ class Baidu(SearchEngine):
         query = urllib2.quote(query.encode('utf-8'))
         param = urllib.urlencode({'wd':'"%s"' % query, 'ie':'utf-8', 'oe':'utf-8'})
         ip = self.choose_ip()
-        return self.url % (ip, query)
+        return self.url % (ip, param)
         
 class Google(SearchEngine):
     url = "http://%s/search?%s"
@@ -93,19 +97,19 @@ class Google(SearchEngine):
         "72.14.235.147":0,
         "74.125.19.147":0,
         "74.125.19.103":0}
-    re_hit = re.compile (u"<b>([0-9\,]+)</b> 项符合 *<b>")
+    re_hit = re.compile (u"获得约 <b>([0-9\,]+)</b> 条结果")
     re_miss = re.compile(u"未找到符合.*的结果")
 
     def build_url(self, query):
-        query = '"%s"' % urllib2.quote(query.encode('utf-8'))
-        param = urllib.urlencode({'as_epq': query,
+        #query = urllib2.quote(query.encode('utf-8'))
+        param = urllib.urlencode({'as_epq': query.encode('utf-8'),
                                   'ie':'utf-8',
                                   'oe':'utf-8',
                                   'hl':'zh_CN',
                                   'c2coff':'1',
                                   'lr':''})
         ip = self.choose_ip()
-        return self.url % (ip, query)
+        return self.url % (ip, param), ip
     
 class SearchEngineFilter(object):
     def __init__(self, search_engine, threshold = 100000):
@@ -116,14 +120,17 @@ class SearchEngineFilter(object):
                                                      'Gecko/20080314'
                                                      'Firefox/3.0.3')}
     def get_freq(self, word):
-        #params0 = urllib.urlencode ({'as_epq': '"%s"' % word})
-        url = self.se.build_url(word)
-        req = urllib2.Request (url, headers=self.http_headers)
-        #f = codecs.open( "test1.txt", "r", "utf-8" )
-        f = urllib2.urlopen (req)
-        lines = unicode("".join(f.readlines()), "utf-8")
-        return self.se.get_freq(lines)
-
+        while True:
+            try:
+                url, ip = self.se.build_url(word)
+                req = urllib2.Request (url, headers=self.http_headers)
+                f = urllib2.urlopen (req)
+                lines = unicode("".join(f.readlines()), "utf-8")
+                return self.se.get_freq(lines)
+            except urllib2.URLError,e:
+                # this ip is not accessible
+                self.se.remove_ip(ip)
+            
     def get_freq__(self, word):
         ip = random.choice(filter(lambda ip: self.se.ips[ip] == 0, self.se.ips))
         freq = self.__get_word_freq_from_ip(word, ip)
@@ -156,4 +163,3 @@ if __name__ == "__main__":
     google_filter = SearchEngineFilter(Google())
     for word in [u'人间', u'大炮']:
         print word, ':', google_filter.get_freq(word)
-    

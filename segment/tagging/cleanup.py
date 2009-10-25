@@ -21,53 +21,7 @@
 from __future__ import with_statement
 import sys
 import codecs
-from curses import ascii
-
-def is_zh(ch):
-    """return True if ch is Chinese character.
-    full-width puncts/latins are not counted in.
-    """
-    x = ord(ch)
-    # CJK Radicals Supplement and Kangxi radicals
-    if 0x2e80 <= x <= 0x2fef:
-        return True
-    # CJK Unified Ideographs Extension A
-    elif 0x3400 <= x <= 0x4dbf:
-        return True
-    # CJK Unified Ideographs
-    elif 0x4e00 <= x <= 0x9fbb:
-        return True
-    # CJK Compatibility Ideographs
-    elif 0xf900 <= x <= 0xfad9:
-        return True
-    # CJK Unified Ideographs Extension B
-    elif 0x20000 <= x <= 0x2a6df:
-        return True
-    else:
-        return False
-
-def is_punct(ch):
-    x = ord(ch)
-    # in no-formal literals, space is used as punctuation sometimes.
-    if x < 127 and ascii.ispunct(x):
-        return True
-    # General Punctuation
-    elif 0x2000 <= x <= 0x206f:
-        return True
-    # CJK Symbols and Punctuation
-    elif 0x3000 <= x <= 0x303f:
-        return True
-    # Halfwidth and Fullwidth Forms
-    elif 0xff00 <= x <= 0xffef:
-        return True
-    # CJK Compatibility Forms
-    elif 0xfe30 <= x <= 0xfe4f:
-        return True
-    else:
-        return False
-
-def is_terminator(ch):
-    return ch in (u'!', u'?', u',', u';', u'.', u'！', u'？', u'，', u'。', u'…')
+from hanzi_util import is_terminator, is_punct, is_zh
 
 def split_into_sentences(line):
     tokens = []

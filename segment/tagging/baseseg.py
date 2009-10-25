@@ -17,7 +17,7 @@ class CRFPP(object):
         arg_str = ' '.join([' '.join(['-'+k,str(v)]) for k,v in args.items()])
         self.tagger = crfpp.Tagger(arg_str)
         
-    def segment(self, tokens):
+    def segment(self, tokens, delimeter=u'/'):
         self.tagger.clear()
         for token in tokens:
             self.tagger.add(token.encode('utf-8'))
@@ -36,8 +36,9 @@ class CRFPP(object):
             word.append(tokens[i])
         if word:
             words.append(''.join(word))
-        print u' '.join(words)
-        print ''.join(tokens)
+        if self.verbose:
+            print ''.join(tokens)
+        print delimeter.join(words)
         
     def __call__(self, tokens):
         self.segment(tokens)

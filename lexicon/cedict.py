@@ -7,6 +7,7 @@
 import sys
 import codecs
 import re
+from optparse import OptionParser
 
 # the format of cedit looks like
 #   <traditional chinese word> <simplfied chinese word> [<pinyins with tones>] /translations|in|english/
@@ -27,14 +28,15 @@ def normalize_pinyins(pinyins):
     return "'".join(normalize(py) for py in pinyins.split())
     
 cedict_pattern = re.compile('\S+ (\S+) \[([^\]]+)\] .*')
-def transform(line):
+
+def transform(line, dump_func):
     try:
         sc_word, pinyins = cedict_pattern.match(line).groups()
-        print sc_word, normalize_pinyins(pinyins)
+        dump_func(sc_word, normalize_pinyins(pinyins))
     except:
         pass                            # just ran into an unknown line or a hybrid word
     
-def main(cedict_fname):
+def dump(cedict_fname, dump_func):
     try:
         cedict_file = codecs.open(cedict_fname, "r", "utf-8")
     except:
@@ -42,10 +44,33 @@ def main(cedict_fname):
         sys.exit(1)
     for line in cedict_file:
         if line.startswith(u'#'): continue
-        transform(line)
+        transform(line, dump_func)
     cedict_file.close()
+
+def dump_sunpinyin(sc_word, pinyins):
+    print sc_word, pinyins
+
+class DumpToDb(object):
+    import wordb
+    def __init__(self, filename):
+        self.db = wordb.open(filename)
+
+    def __call__(self, word):
+        self.db[word] = 1
         
 if __name__ == "__main__":
+    parser = OptionParser()
+    parser.add_option("-d", "--dict",
+                      help="uncompressed cedict file",
+                      metavar="DICT",
+                      default="../data/cedict_1_0_ts_utf-8_mdbg.txt")
+    parser.add_option("-m", "--db",
+                      help="dump DICT to the sqlite3 DB",
+                      metavar="DB")
+    parser.add_option("-o", "--output",
+                      help="dump simplified Chinese words and its pinyin from DICT to FILE",
+                      metavar="FILE")
+    
     #cedict_fname = sys.argv[1]
-    cedict_fname = "/media/stuff/dev/dev/nlp/cedict_1_0_ts_utf-8_mdbg.txt"
-    main(cedict_fname)
+    cedict_fname = 
+    # dump(cedict_fname, dump_sunpinyin)
