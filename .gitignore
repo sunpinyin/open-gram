@@ -3,6 +3,7 @@ GPATH
 GRTAGS
 GSYMS
 GTAGS
+build/*
 *~
 *.pyc
 *.o
