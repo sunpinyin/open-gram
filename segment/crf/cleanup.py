@@ -2,7 +2,12 @@
 # -*- encoding: utf-8 -*-
 
 #
-# a script to preprocess chinese HTML pages to be used as raw corpus
+# a script to preprocess chinese HTML pages to be used as raw corpus for
+# character based tagging, like CRF and maxent
+
+# the output would be a list of sentence, each sentence is composed of tokens.
+# Token is either Chinese character, English word, or punctuation.
+
 #
 # this script will
 # 1. remove all HTML tags in the input file
