@@ -37,11 +37,13 @@ class SearchEngine(object):
     def get_freq(self, result):
         match = self.re_hit.findall (result)
         if not match:
+            # could be search engine's suggestion or 
+            # it just banned me
             return 0
         freq = int (match[0].replace(',', ''))
         
 class Baidu(SearchEngine):
-    url = "http://%s/s?wd=%s"
+    url = "http://%s/s?%s"
     ips = {"http://121.14.88.14":0,
            "http://121.14.89.14":0,
            "http://119.75.213.50":0,
@@ -55,12 +57,13 @@ class Baidu(SearchEngine):
     re_miss = u"没有找到与.*相关的网页"
     
     def build_url(self, query):
-        param = urllib.urlencode({'as_epq':'"%s"' % query})
+        query = urllib2.quote(query.encode('utf-8'))
+        param = urllib.urlencode({'wd':'"%s"' % query, 'ie':'utf-8', 'oe':'utf-8'})
         ip = self.choose_ip()
         return self.url % (ip, query)
         
 class Google(SearchEngine):
-    url = "http://%s/search?%s&hl=zh_CN&ie=utf-8&oe=utf-8&c2coff=1&lr="
+    url = "http://%s/search?%s"
     ips = {
         "203.208.37.104":0,
         "203.208.37.99":0,
@@ -94,7 +97,13 @@ class Google(SearchEngine):
     re_miss = re.compile(u"未找到符合.*的结果")
 
     def build_url(self, query):
-        param = urllib.urlencode({'as_epq': query.encode('utf-8')})
+        query = '"%s"' % urllib2.quote(query.encode('utf-8'))
+        param = urllib.urlencode({'as_epq': query,
+                                  'ie':'utf-8',
+                                  'oe':'utf-8',
+                                  'hl':'zh_CN',
+                                  'c2coff':'1',
+                                  'lr':''})
         ip = self.choose_ip()
         return self.url % (ip, query)
     
@@ -113,16 +122,7 @@ class SearchEngineFilter(object):
         #f = codecs.open( "test1.txt", "r", "utf-8" )
         f = urllib2.urlopen (req)
         lines = unicode("".join(f.readlines()), "utf-8")
-        freq = -1
-        m = self.re_hit.findall (lines)
-        if m:
-            freq = int (m[0].replace (",", ""))
-        elif self.re_miss.search(lines):
-            freq = 0
-        else:
-            # could be search engine's suggestion
-            freq = 0
-        return freq
+        return self.se.get_freq(lines)
 
     def get_freq__(self, word):
         ip = random.choice(filter(lambda ip: self.se.ips[ip] == 0, self.se.ips))
