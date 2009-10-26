@@ -5,7 +5,7 @@ import sys
 import os
 import codecs
 import crfpp
-
+import preprocess
 
 class CRFPP(object):
     def __init__(self, **args):
@@ -38,18 +38,28 @@ class CRFPP(object):
             words.append(''.join(word))
         if self.verbose:
             print ''.join(tokens)
-        print delimeter.join(words)
-        
+        delimeter.join(words)
+                
     def __call__(self, tokens):
-        self.segment(tokens)
+        return self.segment(tokens)
 
+def process_file(segment, filename):
+    with codecs.open(filename, 'r', 'utf-8') as f:
+        for sentence in preprocess.process(f):
+            yield segment(sentence)
+
+
+def process_dir(segment, dirname):
+    for root, dirs, files in os.walk(dirname):
+        for fn in files:
+            process_file(segment, os.path.join(root, fn))
+    
 if __name__ == "__main__":
     datadir = '../data'
     model = os.path.join(datadir , 'model', 'pku-6-tags.model')
-    from cleanup import process
     segment = CRFPP(m=model, verbose=False)
-    for fn in sys.argv[1:]:
-        with codecs.open(fn, 'r', 'utf-8') as f:
-            process(f, segment)
+    for dirname in sys.argv[1:]:
+        process_dir(segment, dirname)
+
                 
                     

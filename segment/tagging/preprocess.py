@@ -61,12 +61,12 @@ def is_ascii_line(line):
     else:
         return True
 
-def process(input, segment_func):
+def process(input):
     for line in input:
         if is_ascii_line(line):
             continue
         for sentence in split_into_sentences(line.strip()):
-            segment_func(sentence)
+            yield sentence
 
 def print_sentence(sentence):
     s = u' '.join(sentence)
@@ -75,4 +75,5 @@ def print_sentence(sentence):
 if __name__ == "__main__":
     for fn in sys.argv[1:]:
         with codecs.open(fn, 'r', 'utf-8') as f:
-            process(f, print_sentence)
+            for sentence in process(f):
+                print_sentence(sentence)

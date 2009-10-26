@@ -47,16 +47,21 @@ def dump(cedict_fname, dump_func):
         transform(line, dump_func)
     cedict_file.close()
 
-def dump_sunpinyin(sc_word, pinyins):
-    print sc_word, pinyins
+def dump_to_file(filename):
+    if filename == '-':
+        f = sys.stdout
+    else:
+        f = file(filename)
+    def dump_func(sc_word, pinyins):
+        print >> f, sc_word, pinyins
+    return dump_func
 
-class DumpToDb(object):
+def dump_to_db(filename):
     import wordb
-    def __init__(self, filename):
-        self.db = wordb.open(filename)
-
-    def __call__(self, word):
-        self.db[word] = 1
+    db = wordb.open(filename)
+    def dump_func(word, pinyins):
+        db[word] = 1
+    return dump_func
         
 if __name__ == "__main__":
     parser = OptionParser()
@@ -70,7 +75,21 @@ if __name__ == "__main__":
     parser.add_option("-o", "--output",
                       help="dump simplified Chinese words and its pinyin from DICT to FILE",
                       metavar="FILE")
+    opts, args = parser.parse_args()
     
-    #cedict_fname = sys.argv[1]
-    cedict_fname = 
-    # dump(cedict_fname, dump_sunpinyin)
+    if opts.dict:
+        cedict_fname = opts.dict
+    elif args:
+        cedict_fname = args[0]
+    else:
+        default_cedict = '../data/cedict_1_0_ts_utf-8_mdbg.txt'
+        print >> sys.stderr, 'using %s as the dict' % default_cedict
+        cedict_fname = default_cedict
+
+    if opts.output:
+        dump_func = dump_to_file(opts.output)
+    elif opts.db:
+        dump_func = dump_to_db(opts.db)
+    else:
+        dump_func = dump_to_file('-')
+    dump(cedict_fname, dump_func)

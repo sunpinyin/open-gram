@@ -9,7 +9,7 @@ from operator import itemgetter
 __all__ = ['error', 'open']
 
 class WordFreqDB(object):
-    def __init__(self, filename):
+    def __init__(self, filename = 'words.db'):
         self.conn = sqlite3.connect(filename)
         MAKE_TABLE = '''create table if not exists 
                         words (word text primary key, freq integer not null)'''
@@ -37,7 +37,8 @@ class WordFreqDB(object):
     def __setitem__(self, word, freq):
         ADD_ITEM = '''replace into words (word, freq) values (?, ?)'''
         self.conn.execute(ADD_ITEM, (word, freq))
-        self.conn.commit()
+        # it's too slow to commit every time
+        # self.conn.commit()
             
     def __getitem__(self, word):
         GET_ITEM = '''select freq from words where word = ?'''
@@ -64,8 +65,8 @@ class WordFreqDB(object):
 
 def open(file=None, *args):
     if file is not None:
-        return SQLhash(file)
-    return SQLhash()
+        return WordFreqDB(file)
+    return WordFreqDB()
 
 if __name__ == "__main__":
     db = WordFreqDB('./wordb.db')
