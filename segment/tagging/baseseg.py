@@ -1,9 +1,10 @@
 #!/usr/bin/python
 
 from __future__ import with_statement
-import sys
+import sys, errno
 import os
 import codecs
+from optparse import OptionParser
 import crfpp
 import preprocess
 
@@ -17,7 +18,7 @@ class CRFPP(object):
         arg_str = ' '.join([' '.join(['-'+k,str(v)]) for k,v in args.items()])
         self.tagger = crfpp.Tagger(arg_str)
         
-    def segment(self, tokens, delimeter=u'/'):
+    def segment(self, tokens):
         self.tagger.clear()
         for token in tokens:
             self.tagger.add(token.encode('utf-8'))
@@ -38,7 +39,7 @@ class CRFPP(object):
             words.append(''.join(word))
         if self.verbose:
             print ''.join(tokens)
-        delimeter.join(words)
+        return words
                 
     def __call__(self, tokens):
         return self.segment(tokens)
@@ -48,18 +49,61 @@ def process_file(segment, filename):
         for sentence in preprocess.process(f):
             yield segment(sentence)
 
-
-def process_dir(segment, dirname):
-    for root, dirs, files in os.walk(dirname):
-        for fn in files:
-            process_file(segment, os.path.join(root, fn))
+def makedir(dirname):
+    try:
+        os.makedirs(dirname)
+    except OSError, e:
+        if e.errno == errno.EEXIST:
+            pass
+        else:
+            raise
     
-if __name__ == "__main__":
-    datadir = '../data'
-    model = os.path.join(datadir , 'model', 'pku-6-tags.model')
-    segment = CRFPP(m=model, verbose=False)
-    for dirname in sys.argv[1:]:
-        process_dir(segment, dirname)
+def make_output_dir(in_basedir, dirname, output_base):
+    output_dir = os.path.join(output_base, dirname[len(in_basedir):])
+    makedir(output_dir)
+    return output_dir
+        
 
-                
-                    
+def print_words(words, delimeter=u'/'):
+    print delimeter.join(words)
+
+def process_dir(segment, input_dir, dump_func=print_words):
+    for root, dirs, files in os.walk(input_dir):
+#         if files:
+#             make_output_dir(input_dir, root, output_dir)
+        for fn in files:
+            for words in process_file(segment, os.path.join(root, fn)):
+                dump_func(words)
+
+def process(model, verbose, input_files, dump_func):
+    segment = CRFPP(m=model, verbose=verbose)
+    for filename in input_files:
+        if os.path.isfile(filename):
+            process_file(segment, filename)
+        elif os.path.isdir(filename):
+            dirname = os.path.dirname(filename)
+            process_dir(segment, dirname, dump_func)
+
+if __name__ == "__main__":
+    
+    default_datadir = '../data'
+    default_model = os.path.join(default_datadir , 'model', 'pku-6-tags.model')
+
+    parser = OptionParser()
+    parser.add_option("-i", "--input")
+    parser.add_option("-o", "--output")
+    parser.add_option("-m", "--model", default=default_model)
+    parser.add_option("-v", "--verbose", action="store_true", default=False)
+    opts, args = parser.parse_args()
+
+    if opts.input:
+        input_files = [opts.input]
+    else:
+        input_files = args
+
+    if opts.output:
+        output_dir = opts.output
+    else:
+        output_dir = None
+
+    process(opts.model, opts.verbose, input_files, print_words)

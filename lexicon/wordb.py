@@ -32,7 +32,7 @@ class WordFreqDB(object):
     
     def __contains__(self, word):
         GET_ITEM = '''select freq from words where word = ?'''
-        return self.conn.execute(GET_WORD, word).fetchone() is not None
+        return self.conn.execute(GET_ITEM, (word,)).fetchone() is not None
 
     def __setitem__(self, word, freq):
         ADD_ITEM = '''replace into words (word, freq) values (?, ?)'''
