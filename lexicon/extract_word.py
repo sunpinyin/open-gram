@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- encoding: utf-8 -*-
 
 #
 # extract word from segmented corpus, and filter it using a given dictionary
@@ -13,8 +14,9 @@ import wordb
 import baseseg
 from hanzi_util import is_zh, is_punct
 
-db = wordb.open('../data/wordb.db')
+db = wordb.open('./words.db')
 
+verbose = False
 #
 # filters: returns True if we want keep this word
 #
@@ -45,15 +47,17 @@ get_word_freq = None
 
 def process_words(words):
     for word in words:
-        for keep_the_word in filters:
+        for i, keep_the_word in enumerate(filters):
             if not keep_the_word(word):
-                continue
+                break
+        else:
+            if verbose:
+                print 'adding', word, 'into db'
             if get_word_freq is not None:
                 freq = get_word_freq(word)
                 db[word] = freq
             else:
                 db[word] = 1
-            print 'adding', word, 'into db'
     
 def process_file(input_file):
     for line in input_file:
@@ -77,7 +81,6 @@ def extract_using_crf():
     parser.add_option("-m", "--model", default=default_model)
     parser.add_option("-v", "--verbose", action="store_true", default=False)
     opts, args = parser.parse_args()
-
     if opts.input:
         input_files = [opts.input]
     else:
@@ -85,8 +88,9 @@ def extract_using_crf():
         
     if opts.search_engine is not None:
         get_word_freq = get_search_engine(search_engine)
-        
-    baseseg.process(opts.model, opts.verbose, input_files, process_words)
+
+    verbose = opts.verbose      
+    baseseg.process(opts.model, verbose=False, input_files, process_words)
 
 if __name__ == "__main__":
     extract_using_crf()

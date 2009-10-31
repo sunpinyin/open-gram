@@ -5,6 +5,7 @@ from __future__ import with_statement
 import sqlite3
 import collections
 from operator import itemgetter
+from optparse import OptionParser
 
 __all__ = ['error', 'open']
 
@@ -68,11 +69,21 @@ def open(file=None, *args):
         return WordFreqDB(file)
     return WordFreqDB()
 
+
 if __name__ == "__main__":
-    db = WordFreqDB('./wordb.db')
-    words = {u'人间':256,
-             u'大炮':128}
-    for w,f in words.iteritems():
-        db[w] = f
-    for w,f in db.items():
-        print w, f
+    parser = OptionParser()
+    parser.add_option('-d', '--db',
+                      help='sqlite db file',
+                      default='./wordb.db')
+    parser.add_option('-l', '--list',
+                      action='store_true', default=True)
+    opts, args = parser.parse_args()
+    if args:
+        fname = args[0]
+    else:
+        fname = opts.db
+
+    if opts.list:
+        db = WordFreqDB(fname)
+        for w in db.keys():
+            print w
