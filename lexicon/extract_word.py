@@ -45,7 +45,9 @@ filters = [is_not_single_character,
 
 get_word_freq = None
 
-def process_words(words):
+def process_words(words, threshold=2560000):
+    global verbose
+    global get_word_freq
     for word in words:
         for i, keep_the_word in enumerate(filters):
             if not keep_the_word(word):
@@ -55,17 +57,18 @@ def process_words(words):
                 print 'adding', word, 'into db'
             if get_word_freq is not None:
                 freq = get_word_freq(word)
-                db[word] = freq
+                if freq > threshold:
+                    db[word] = freq
             else:
                 db[word] = 1
     
 def process_file(input_file):
+    words = set()
     for line in input_file:
-        words = line.split(u'/')
-        process_words(words)
+        words.add(set(line.split(u'/')))
+    process_words(words)
 
 def process_files(files, search_engine):
-    
     for fn in files:
         with codecs.open(fn, 'r', 'utf-8') as f:
             process_file(f)
@@ -81,6 +84,7 @@ def extract_using_crf():
     parser.add_option("-m", "--model", default=default_model)
     parser.add_option("-v", "--verbose", action="store_true", default=False)
     opts, args = parser.parse_args()
+        
     if opts.input:
         input_files = [opts.input]
     else:
@@ -89,8 +93,11 @@ def extract_using_crf():
     if opts.search_engine is not None:
         get_word_freq = get_search_engine(search_engine)
 
+    global verbose
     verbose = opts.verbose      
-    baseseg.process(opts.model, verbose=False, input_files, process_words)
+    baseseg.process(opts.model, verbose=False,
+                    input_files=input_files,
+                    dump_func=process_words)
 
 if __name__ == "__main__":
     extract_using_crf()
