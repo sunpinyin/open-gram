@@ -81,8 +81,7 @@ def process(model, verbose, input_files, dump_func):
         if os.path.isfile(filename):
             process_file(segment, filename)
         elif os.path.isdir(filename):
-            dirname = os.path.dirname(filename)
-            process_dir(segment, dirname, dump_func)
+            process_dir(segment, filename, dump_func)
 
 if __name__ == "__main__":
     

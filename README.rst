@@ -4,10 +4,10 @@ open-gram
 open-gram is a project tries to collect lexicon and build n-gram dataset for NLP in Chinese. This project tries to leverage existing open source resources like crfpp and CC-CEDICT.
 
 open-gram includes 4 parts
-- corpus collection
-- segmentation
-- (new) word extraction
-- n-gram info counting
+  - corpus collection
+  - segmentation
+  - (new) word extraction
+  - n-gram info counting
 
 corpus collection
 =================

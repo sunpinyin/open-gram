@@ -159,6 +159,16 @@ class SearchEngineFilter(object):
             print e
             print >> sys.stderr, "retry"
 
+def get_search_engine(engine='baidu'):
+    if engine == 'baidu':
+        search_engine = SearchEngineFilter(Baidu())
+    else:
+        search_engine = SearchEngineFilter(Google())
+    def get_word_freq(word):
+        freq = search_engine.get_freq(word)
+        return freq
+    return get_word_freq
+
 if __name__ == "__main__":
     google_filter = SearchEngineFilter(Google())
     for word in [u'人间', u'大炮']:

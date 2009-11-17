@@ -10,13 +10,17 @@ from __future__ import with_statement
 import codecs
 import os, sys
 from optparse import OptionParser
+
 import wordb
 import baseseg
 from hanzi_util import is_zh, is_punct
+from stopword_filter import is_not_stop_word
+from search_filter import get_search_engine
 
 db = wordb.open('./words.db')
 
 verbose = False
+
 #
 # filters: returns True if we want keep this word
 #
@@ -27,34 +31,37 @@ def is_chinese_word(word):
     return word and is_zh(word[0])
 
 def is_not_known_word(word):
+    global db
     return word not in db
-
-def get_search_engine(engine='baidu'):
-    if engine == 'baidu':
-        search_engine = SearchEngineFilter(Baidu())
-    else:
-        search_engine = SearchEngineFilter(Google())
-    def get_word_freq(word):
-        freq = search_engine.get_freq(word)
-        return freq
-    return get_word_freq
 
 filters = [is_not_single_character,
            is_chinese_word,
+           is_not_stop_word,
            is_not_known_word]
 
 get_word_freq = None
 
-def process_words(words, threshold=2560000):
+filter_names = {id(is_not_single_character):"is_not_single_character",
+                id(is_chinese_word):"is_chinese_word",
+                id(is_not_stop_word):"is_not_stop_word",
+                id(is_not_known_word):"is_not_known_word"}
+
+def log(message):
     global verbose
+    if verbose:
+        print message
+
+def process_words(words, threshold=2560000):
     global get_word_freq
+    global db
+
     for word in words:
         for i, keep_the_word in enumerate(filters):
             if not keep_the_word(word):
+                log("%s\tgets killed by %s" % (word, filter_names[id(keep_the_word)]))
                 break
         else:
-            if verbose:
-                print 'adding', word, 'into db'
+            log("%s\tadded into db" % word)
             if get_word_freq is not None:
                 freq = get_word_freq(word)
                 if freq > threshold:
