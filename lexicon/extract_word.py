@@ -17,68 +17,79 @@ from hanzi_util import is_zh, is_punct
 from stopword_filter import is_not_stop_word
 from search_filter import get_search_engine
 
-db = wordb.open('./words.db')
 
-verbose = False
+class WordExtractor(object):
 
-#
-# filters: returns True if we want keep this word
-#
-def is_not_single_character(word):
-    return len(word) > 1
+    def __init__(self, get_word_freq = None, verbose=False):
+        self.get_word_freq = get_word_freq
+        self.verbose = verbose
+        self.db = wordb.open('./words.db')
 
-def is_chinese_word(word):
-    return word and is_zh(word[0])
+        self.filters = [self.is_not_single_character,
+                        self.is_chinese_word,
+                        self.is_not_AA,
+                        is_not_stop_word,
+                        self.is_not_known_word]
+        
+        self.filter_names = {self.is_not_single_character:"is_not_single_character",
+                             self.is_chinese_word        :"is_chinese_word",
+                             self.is_not_AA              :"is_not_AA",
+                             is_not_stop_word            :"is_not_stop_word",
+                             self.is_not_known_word      :"is_not_known_word"}
 
-def is_not_known_word(word):
-    global db
-    return word not in db
+    def __call__(self, words):
+        self.process_words(words, 2560000)
+        
+    def process_files(files):
+        """process file in batch
+        """
+        for fn in files:
+            with codecs.open(fn, 'r', 'utf-8') as f:
+                self.process_file(f)
 
-filters = [is_not_single_character,
-           is_chinese_word,
-           is_not_stop_word,
-           is_not_known_word]
+    def process_file(self, input_file):
+        """process segmented file
+        """
+        words = set()
+        for line in input_file:
+            words.add(set(line.split(u'/')))
+        self.process_words(words)
 
-get_word_freq = None
-
-filter_names = {id(is_not_single_character):"is_not_single_character",
-                id(is_chinese_word):"is_chinese_word",
-                id(is_not_stop_word):"is_not_stop_word",
-                id(is_not_known_word):"is_not_known_word"}
-
-def log(message):
-    global verbose
-    if verbose:
-        print message
-
-def process_words(words, threshold=2560000):
-    global get_word_freq
-    global db
-
-    for word in words:
-        for i, keep_the_word in enumerate(filters):
-            if not keep_the_word(word):
-                log("%s\tgets killed by %s" % (word, filter_names[id(keep_the_word)]))
-                break
-        else:
-            log("%s\tadded into db" % word)
-            if get_word_freq is not None:
-                freq = get_word_freq(word)
-                if freq > threshold:
-                    db[word] = freq
+    def process_words(self, words, threshold=2560000):
+        for word in words:
+            for i, keep_the_word in enumerate(self.filters):
+                if not keep_the_word(word):
+                    self.log("%s\tgets killed by %s" % \
+                             (word, self.filter_names[keep_the_word]))
+                    break
             else:
-                db[word] = 1
-    
-def process_file(input_file):
-    words = set()
-    for line in input_file:
-        words.add(set(line.split(u'/')))
-    process_words(words)
+                self.log("%s\tadded into db" % word)
+                if self.get_word_freq:
+                    freq = self.get_word_freq(word)
+                    if freq > threshold:
+                        self.db[word] = freq
+                else:
+                    self.db[word] = 1
 
-def process_files(files, search_engine):
-    for fn in files:
-        with codecs.open(fn, 'r', 'utf-8') as f:
-            process_file(f)
+    def is_not_single_character(self, word):
+        """returns True if we want keep this word
+        """
+        return len(word) > 1
+
+    def is_chinese_word(self, word):
+        return word and is_zh(word[0])
+
+    def is_not_known_word(self, word):
+        return word not in self.db
+
+    def is_not_AA(self, word):
+        return not(len(word) == 2 and word[0] == word[1])
+    
+    def log(self, message):
+        if self.verbose:
+            print message
+
+
 
 def extract_using_crf():
     default_datadir = '../data'
@@ -96,15 +107,17 @@ def extract_using_crf():
         input_files = [opts.input]
     else:
         input_files = args
-        
+
+    
     if opts.search_engine is not None:
         get_word_freq = get_search_engine(search_engine)
-
-    global verbose
-    verbose = opts.verbose      
+    else:
+        get_word_freq = None
+        
+    word_extractor = WordExtractor(get_word_freq, opts.verbose)
     baseseg.process(opts.model, verbose=False,
                     input_files=input_files,
-                    dump_func=process_words)
+                    dump_func=word_extractor)
 
 if __name__ == "__main__":
     extract_using_crf()
