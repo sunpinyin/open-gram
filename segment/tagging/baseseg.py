@@ -5,16 +5,14 @@ import sys, errno
 import os
 import codecs
 from optparse import OptionParser
+import logging
+
 import crfpp
 import preprocess
 
 class CRFPP(object):
     def __init__(self, **args):
         # args = '-m ../model -v 3 -n 2'
-        self.verbose = False
-        if 'verbose' in args:
-            self.verbose = args['verbose']
-            del(args['verbose'])
         arg_str = ' '.join([' '.join(['-'+k,str(v)]) for k,v in args.items()])
         self.tagger = crfpp.Tagger(arg_str)
         
@@ -22,10 +20,9 @@ class CRFPP(object):
         self.tagger.clear()
         for token in tokens:
             self.tagger.add(token.encode('utf-8'))
-        if self.verbose:
-            print "column size: " , self.tagger.xsize()
-            print "token size: " , self.tagger.size()
-            print "tag size: " , self.tagger.ysize()
+        logging.debug("column size: %d" % self.tagger.xsize())
+        logging.debug("token size: %d" % self.tagger.size())
+        logging.debug("tag size: %d" % self.tagger.ysize())
         self.tagger.parse()
         words = []
         word = []
@@ -37,8 +34,7 @@ class CRFPP(object):
             word.append(tokens[i])
         if word:
             words.append(''.join(word))
-        if self.verbose:
-            print ''.join(tokens)
+        logging.debug(''.join(tokens))
         return words
                 
     def __call__(self, tokens):
@@ -75,8 +71,8 @@ def process_dir(segment, input_dir, dump_func=print_words):
             for words in process_file(segment, os.path.join(root, fn)):
                 dump_func(words)
 
-def process(model, verbose, input_files, dump_func):
-    segment = CRFPP(m=model, verbose=verbose)
+def process(model, input_files, dump_func):
+    segment = CRFPP(m=model)
     for filename in input_files:
         if os.path.isfile(filename):
             process_file(segment, filename)
@@ -105,4 +101,6 @@ if __name__ == "__main__":
     else:
         output_dir = None
 
+    if opts.verbose:
+        logging.basicConfig(level=logging.DEBUG)
     process(opts.model, opts.verbose, input_files, print_words)

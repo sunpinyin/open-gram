@@ -10,35 +10,22 @@ from __future__ import with_statement
 import codecs
 import os, sys
 from optparse import OptionParser
+import logging
 
 import wordb
 import baseseg
-from hanzi_util import is_zh, is_punct
-from stopword_filter import is_not_stop_word
 from search_filter import get_search_engine
-
+from filters import Filters
 
 class WordExtractor(object):
 
-    def __init__(self, get_word_freq = None, verbose=False):
+    def __init__(self, get_word_freq = None):
         self.get_word_freq = get_word_freq
-        self.verbose = verbose
-        self.db = wordb.open('./words.db')
-
-        self.filters = [self.is_not_single_character,
-                        self.is_chinese_word,
-                        self.is_not_AA,
-                        is_not_stop_word,
-                        self.is_not_known_word]
+        self.new_words = wordb.open('./newords.db')
+        self.filters = Filters()
         
-        self.filter_names = {self.is_not_single_character:"is_not_single_character",
-                             self.is_chinese_word        :"is_chinese_word",
-                             self.is_not_AA              :"is_not_AA",
-                             is_not_stop_word            :"is_not_stop_word",
-                             self.is_not_known_word      :"is_not_known_word"}
-
     def __call__(self, words):
-        self.process_words(words, 2560000)
+        self.process_words(words, threshold=2560000)
         
     def process_files(files):
         """process file in batch
@@ -57,39 +44,15 @@ class WordExtractor(object):
 
     def process_words(self, words, threshold=2560000):
         for word in words:
-            for i, keep_the_word in enumerate(self.filters):
-                if not keep_the_word(word):
-                    self.log("%s\tgets killed by %s" % \
-                             (word, self.filter_names[keep_the_word]))
-                    break
-            else:
-                self.log("%s\tadded into db" % word)
+            if self.filters.keep(word) and \
+               word not in self.new_words:
+                logging.info("%s\tadded into db" % word)
                 if self.get_word_freq:
                     freq = self.get_word_freq(word)
                     if freq > threshold:
-                        self.db[word] = freq
+                        self.new_words[word] = freq
                 else:
-                    self.db[word] = 1
-
-    def is_not_single_character(self, word):
-        """returns True if we want keep this word
-        """
-        return len(word) > 1
-
-    def is_chinese_word(self, word):
-        return word and is_zh(word[0])
-
-    def is_not_known_word(self, word):
-        return word not in self.db
-
-    def is_not_AA(self, word):
-        return not(len(word) == 2 and word[0] == word[1])
-    
-    def log(self, message):
-        if self.verbose:
-            print message
-
-
+                    self.new_words[word] = 1
 
 def extract_using_crf():
     default_datadir = '../data'
@@ -108,17 +71,18 @@ def extract_using_crf():
     else:
         input_files = args
 
-    
+    if opts.verbose:
+        logging.basicConfig(level=logging.INFO,
+                            format="%(levelname)s: %(message)s")
     if opts.search_engine is not None:
         get_word_freq = get_search_engine(search_engine)
     else:
         get_word_freq = None
-        
-    word_extractor = WordExtractor(get_word_freq, opts.verbose)
-    baseseg.process(opts.model, verbose=False,
+    
+    word_extractor = WordExtractor(get_word_freq)
+    baseseg.process(opts.model, 
                     input_files=input_files,
                     dump_func=word_extractor)
-
+                       
 if __name__ == "__main__":
     extract_using_crf()
-    
