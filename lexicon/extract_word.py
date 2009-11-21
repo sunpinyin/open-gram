@@ -19,11 +19,13 @@ from filters import Filters
 
 class WordExtractor(object):
 
-    def __init__(self, get_word_freq = None):
+    def __init__(self, output_file, get_word_freq = None):
         self.get_word_freq = get_word_freq
-        self.new_words = wordb.open('./newords.db')
+        self.new_words = wordb.open(output_file)
         self.filters = Filters()
-        
+        self.n_killed = 0
+        self.n_added = 0
+
     def __call__(self, words):
         self.process_words(words, threshold=2560000)
         
@@ -53,6 +55,9 @@ class WordExtractor(object):
                         self.new_words[word] = freq
                 else:
                     self.new_words[word] = 1
+                self.n_added += 1
+            else:
+                self.n_killed +=1
 
 def extract_using_crf():
     default_datadir = '../data'
@@ -62,6 +67,7 @@ def extract_using_crf():
     parser.add_option("-s", "--search-engine",
                       dest="search_engine")
     parser.add_option("-i", "--input")
+    parser.add_option("-o", "--output", default="./newords.db")
     parser.add_option("-m", "--model", default=default_model)
     parser.add_option("-v", "--verbose", action="store_true", default=False)
     opts, args = parser.parse_args()
@@ -78,11 +84,13 @@ def extract_using_crf():
         get_word_freq = get_search_engine(search_engine)
     else:
         get_word_freq = None
-    
-    word_extractor = WordExtractor(get_word_freq)
+
+    word_extractor = WordExtractor(get_word_freq=get_word_freq, output_file=opts.output)
     baseseg.process(opts.model, 
                     input_files=input_files,
                     dump_func=word_extractor)
-                       
+    logging.info("%d words added" % word_extractor.n_added)
+    logging.info("%d words killed" % word_extractor.n_killed)
+
 if __name__ == "__main__":
     extract_using_crf()

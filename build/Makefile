@@ -8,8 +8,9 @@ install:
 	cp -f ../data/wordb.db .
 
 clean:
+	$(RM) newords.db
 	$(RM) *.pyc
 	$(RM) *.py
 
 test: clean install
-	python extract_word.py -i ../data/raw --verbose
+	python extract_word.py -i ../data/raw -o ./newords.db --verbose

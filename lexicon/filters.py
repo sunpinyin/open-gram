@@ -9,7 +9,9 @@ import logging
 
 import wordb
 from stopword_filter import is_stop_word
-from hanzi_util import is_zh, is_punct
+from hanzi_util import is_zh, is_punct, is_zh_number
+
+
 
 class Filters(object):
     def __init__(self):
@@ -17,19 +19,21 @@ class Filters(object):
 
         self.filters = [self.is_single_character,
                         self.is_not_chinese_word,
+                        self.is_number,
                         self.is_AA,
                         is_stop_word,
                         self.is_known_word]
         
         self.filter_names = {self.is_single_character : "is_single_character",
                              self.is_not_chinese_word : "is_not_chinese_word",
+                             self.is_number           : "is_number",
                              self.is_AA               : "is_AA",
                              is_stop_word             : "is_stop_word",
                              self.is_known_word       : "is_known_word"}
 
     def keep(self, word):
         for i, kill_the_word in enumerate(self.filters):
-            if not kill_the_word(word):
+            if kill_the_word(word):
                 logging.info("%s\tgets killed by %s" % \
                              (word, self.filter_names[kill_the_word]))
                 return False
@@ -45,7 +49,10 @@ class Filters(object):
         return not (word and is_zh(word[0]))
 
     def is_known_word(self, word):
-        return word in self.db
+        return word in self.known_words
 
     def is_AA(self, word):
         return len(word) == 2 and word[0] == word[1]
+
+    def is_number(self, word):
+        return is_zh_number(word[0]) and is_zh_number(word[-1])

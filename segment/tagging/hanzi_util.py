@@ -49,6 +49,10 @@ def is_punct(ch):
 def is_terminator(ch):
     return ch in (u'!', u'?', u',', u';', u'.', u'！', u'？', u'，', u'。', u'…')
 
+chinese_number = (u'十', u'百', u'千', u'万', u'亿', u'一', u'二', u'三', u'四', u'五', u'六', u'七', u'八', u'九', u'零', u'几')
+def is_zh_number(ch):
+    return ch in chinese_number
+
 if __name__ == "__main__":
     s = u"hehe, 我爱北京天安门。"
     predicates = {u'zh':is_zh,
