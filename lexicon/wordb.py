@@ -74,16 +74,28 @@ if __name__ == "__main__":
     parser = OptionParser()
     parser.add_option('-d', '--db',
                       help='sqlite db file',
+                      metavar='DB',
                       default='./wordb.db')
     parser.add_option('-l', '--list',
-                      action='store_true', default=True)
+                      help='list all lemmas in DB',
+                      action='store_true', default=False)
+    parser.add_option('-q', '--query',
+                      metavar='WORD',
+                      help='query given WORD in DB')
     opts, args = parser.parse_args()
     if args:
         fname = args[0]
     else:
         fname = opts.db
+    db = WordFreqDB(fname)
 
     if opts.list:
-        db = WordFreqDB(fname)
         for w in db.keys():
             print w
+    
+    if opts.query:
+        query = opts.query.decode('utf-8')
+        if query in db:
+            print opts.query, 'found in', fname
+        else:
+            print opts.query, 'not found in', fname
