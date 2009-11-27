@@ -21,13 +21,13 @@ def normalize_pinyins(pinyins):
     """lower case all pinyins, and remove the tones. if there is no tone, simply raise an exception
     """
     def normalize(py):
-        tones = (u'1', u'2', u'3', u'4')
+        tones = (u'1', u'2', u'3', u'4', u'5')
         if py[-1] not in tones:
             raise Exception("not a pinyin: %s" % py)
         return py[:-1].lower()
     return "'".join(normalize(py) for py in pinyins.split())
     
-cedict_pattern = re.compile('\S+ (\S+) \[([^\]]+)\] .*')
+cedict_pattern = re.compile('\S+ (\S+) \[([^\]]+)\].*')
 
 def transform(line, dump_func):
     try:
@@ -51,7 +51,7 @@ def dump_to_file(filename):
     if filename == '-':
         f = sys.stdout
     else:
-        f = file(filename)
+        f = codecs.open(filename, 'a', 'utf-8')
     def dump_func(sc_word, pinyins):
         print >> f, sc_word, pinyins
     return dump_func
