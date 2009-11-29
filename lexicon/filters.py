@@ -34,8 +34,8 @@ class Filters(object):
     def keep(self, word):
         for i, kill_the_word in enumerate(self.filters):
             if kill_the_word(word):
-                logging.info("%s\tgets killed by %s" % \
-                             (word, self.filter_names[kill_the_word]))
+                logging.debug("%s\tgets killed by %s" % \
+                              (word, self.filter_names[kill_the_word]))
                 return False
         else:
             return True

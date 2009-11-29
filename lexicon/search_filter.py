@@ -48,15 +48,15 @@ class SearchEngine(object):
         
 class Baidu(SearchEngine):
     url = "http://%s/s?%s"
-    ips = {"http://121.14.88.14":0,
-           "http://121.14.89.14":0,
-           "http://119.75.213.50":0,
-           "http://119.75.213.51":0,
-           "http://119.75.213.61":0,
-           "http://202.108.22.5/":0,
-           "http://202.108.22.43/":0,
-           "http://220.181.38.4":0,
-           "http://119.75.216.30":0}
+    ips = {"121.14.88.14":0,
+           "121.14.89.14":0,
+           "119.75.213.50":0,
+           "119.75.213.51":0,
+           "119.75.213.61":0,
+           "202.108.22.5":0,
+           "202.108.22.43":0,
+           "220.181.38.4":0,
+           "119.75.216.30":0}
     re_hit = u"找到相关网页约([0-9\,]+)篇"
     re_miss = u"没有找到与.*相关的网页"
     
@@ -64,7 +64,7 @@ class Baidu(SearchEngine):
         query = urllib2.quote(query.encode('utf-8'))
         param = urllib.urlencode({'wd':'"%s"' % query, 'ie':'utf-8', 'oe':'utf-8'})
         ip = self.choose_ip()
-        return self.url % (ip, param)
+        return self.url % (ip, param), ip
         
 class Google(SearchEngine):
     url = "http://%s/search?%s"

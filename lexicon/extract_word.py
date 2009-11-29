@@ -44,7 +44,7 @@ class WordExtractor(object):
             words.add(set(line.split(u'/')))
         self.process_words(words)
 
-    def process_words(self, words, threshold=2560000):
+    def process_words(self, words, threshold=1000000):
         for word in words:
             if self.filters.keep(word) and \
                word not in self.new_words:
@@ -81,7 +81,7 @@ def extract_using_crf():
         logging.basicConfig(level=logging.INFO,
                             format="%(levelname)s: %(message)s")
     if opts.search_engine is not None:
-        get_word_freq = get_search_engine(search_engine)
+        get_word_freq = get_search_engine(opts.search_engine)
     else:
         get_word_freq = None
 
