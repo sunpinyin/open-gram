@@ -11,16 +11,18 @@ class StopWordFilter(object):
     def __init__(self):
         self.prefix = []
         self.postfix = []
-
+        self.update()
+        
     def update(self, path = '../data/stopword.utf8'):
-        with codecs.open(path) as f:
+        with codecs.open(path, 'r', 'utf-8') as f:
             for line in f:
+                line = line.strip()
                 if not line or line.startswith('#'):
                     continue
                 stopword, flag = line.split()
-                if flag == '1':
+                if flag == u'1':
                     self.postfix.append(stopword)
-                elif flag == '0':
+                elif flag == u'0':
                     self.prefix.append(stopword)
 
     def is_stop_word(self, word):
