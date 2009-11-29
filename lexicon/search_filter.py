@@ -57,12 +57,12 @@ class Baidu(SearchEngine):
            "202.108.22.43":0,
            "220.181.38.4":0,
            "119.75.216.30":0}
-    re_hit = u"找到相关网页约([0-9\,]+)篇"
-    re_miss = u"没有找到与.*相关的网页"
+    re_hit = re.compile(u"找到相关网页约([0-9\,]+)篇")
+    re_miss = re.compile(u"没有找到与.*相关的网页")
+    encoding = "gbk"
     
     def build_url(self, query):
-        query = urllib2.quote(query.encode('utf-8'))
-        param = urllib.urlencode({'wd':'"%s"' % query, 'ie':'utf-8', 'oe':'utf-8'})
+        param = urllib.urlencode({'wd':'"%s"'%query.encode('utf-8'), 'ie':'utf-8'})
         ip = self.choose_ip()
         return self.url % (ip, param), ip
         
@@ -99,7 +99,8 @@ class Google(SearchEngine):
         "74.125.19.103":0}
     re_hit = re.compile (u"获得约 <b>([0-9\,]+)</b> 条结果")
     re_miss = re.compile(u"未找到符合.*的结果")
-
+    encoding = "utf-8"
+    
     def build_url(self, query):
         #query = urllib2.quote(query.encode('utf-8'))
         param = urllib.urlencode({'as_epq': query.encode('utf-8'),
@@ -125,7 +126,7 @@ class SearchEngineFilter(object):
                 url, ip = self.se.build_url(word)
                 req = urllib2.Request (url, headers=self.http_headers)
                 f = urllib2.urlopen (req)
-                lines = unicode("".join(f.readlines()), "utf-8")
+                lines = unicode("".join(f.readlines()), self.se.encoding)
                 return self.se.get_freq(lines)
             except urllib2.URLError,e:
                 # this ip is not accessible
