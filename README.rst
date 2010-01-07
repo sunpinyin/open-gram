@@ -22,8 +22,8 @@ segmentation
 ============
 
 there two ways to segment tokens into words
-* tagging
-* matching
+   * tagging
+   * matching
 
 word extraction
 ===============
