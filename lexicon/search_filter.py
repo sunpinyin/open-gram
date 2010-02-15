@@ -8,6 +8,7 @@
 # then we think it is a popular word
 # 
 
+from __future__ import with_statement
 import urllib, urllib2
 import re
 import sys, os
@@ -126,12 +127,16 @@ class SearchEngineFilter(object):
                 url, ip = self.se.build_url(word)
                 req = urllib2.Request (url, headers=self.http_headers)
                 f = urllib2.urlopen (req)
-                lines = unicode("".join(f.readlines()), self.se.encoding)
+                page = "".join(f.readlines())
+                lines = unicode(page, self.se.encoding, errors='ignore')
                 return self.se.get_freq(lines)
             except urllib2.URLError,e:
                 # this ip is not accessible
                 self.se.remove_ip(ip)
-            
+            except UnicodeDecodeError,e:
+                with open('/tmp/dump.html', mode='w') as f:
+                    f.write(page)
+
     def get_freq__(self, word):
         ip = random.choice(filter(lambda ip: self.se.ips[ip] == 0, self.se.ips))
         freq = self.__get_word_freq_from_ip(word, ip)
