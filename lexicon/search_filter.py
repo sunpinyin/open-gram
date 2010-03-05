@@ -66,7 +66,24 @@ class Baidu(SearchEngine):
         param = urllib.urlencode({'wd':'"%s"'%query.encode('utf-8'), 'ie':'utf-8'})
         ip = self.choose_ip()
         return self.url % (ip, param), ip
-        
+
+class BaiduDict(SearchEngine):
+    url = "http://%s/s?%s"
+    ips = {"220.181.50.93":0}
+    re_miss = re.compile(u"未找到和您的关键词")
+    encoding = 'gbk'
+    
+    def build_url(self, query):
+        param = urllib.urlencode({'wd':'"%s"'%query.encode('utf-8'), 'ie':'utf-8'})
+        ip = self.choose_ip()
+        return self.url % (ip, param), ip
+    
+    def get_freq(self, result):
+        return 0 if self.is_miss(result) else 1
+
+    def is_miss(self, result):
+        return self.re_miss.search(result) is not None
+    
 class Google(SearchEngine):
     url = "http://%s/search?%s"
     ips = {
@@ -137,45 +154,116 @@ class SearchEngineFilter(object):
                 with open('/tmp/dump.html', mode='w') as f:
                     f.write(page)
 
-    def get_freq__(self, word):
-        ip = random.choice(filter(lambda ip: self.se.ips[ip] == 0, self.se.ips))
-        freq = self.__get_word_freq_from_ip(word, ip)
-        if freq >= 0:
-            return freq
-        else:
-            raise BlockedException(ip)
-        
-    def get_freq_(self, word):
-        try:
-            ip = random.choice(filter(lambda ip: self.ips[ip] == 0, self.ips))
-            freq = self.__get_word_freq_from_ip(word, ip)
-            if freq >= 0:
-                return freq
-            else:
-                raise BlockedException(ip)
-        except socket.error, e:
-            print socket.error,e
-        except urllib2.URLError,e:
-            g_list[ip] += 1
-            print urllib2.URLError, e
-        except KeyboardInterrupt, e:
-            print >> sys.stderr, "Exit"
-            sys.exit (1)
-        except Exception, e:
-            print e
-            print >> sys.stderr, "retry"
-
 def get_search_engine(engine='baidu'):
     if engine == 'baidu':
         search_engine = SearchEngineFilter(Baidu())
-    else:
+    elif engine == 'google':
         search_engine = SearchEngineFilter(Google())
+    elif engine == 'baidu-dict':
+        search_engine = SearchEngineFilter(BaiduDict())
+    else:
+        raise Exception('unknown engine %s' % engine)
+    
     def get_word_freq(word):
         freq = search_engine.get_freq(word)
         return freq
     return get_word_freq
 
-if __name__ == "__main__":
+def seek_to_last_word(input, output):
+    last_word = None
+    for line in output:
+        last_word, py = line.split()
+    if last_word is None:
+        return
+    for line in input:
+        word, py = line.split()
+        if word == last_word:
+            break
+    else:
+        raise Exception("cannot continue with last word %s" % word)
+
+def judge_words(undetermined_words, output, threshold):
+    if len(undetermined_words) < 100:
+        return False
+    
+    for word, py, freq in undetermined_words:
+        print u'freq[%s] = %d, is smaller than %d. keep it? [Y/n]' % (word, freq, threshold)
+        answer = raw_input()
+        if answer in ('', 'y'):
+            print 'adding', word
+            print >> output, word, py
+    return True
+
+def filter_dict(filename, output_filename, threshold = 30000):
+    f = codecs.open(filename, 'r', 'utf-8')
+    output = codecs.open(output_filename, 'a+', 'utf-8')
+    seek_to_last_word(f, output)
+    
+    undetermined_words = []
+    
+    get_word_freq = get_search_engine('baidu')
+    is_word = get_search_engine('baidu-dict')
+    for line in f:
+        word, py = line.split()
+        keep_it = False
+        if len(word) == 1:
+            pass
+        else:
+            freq = get_word_freq(word)
+            if freq > threshold or is_word(word):
+                pass
+            elif freq == 0:
+                print 'removing', word
+                continue
+            else:
+                print 'put', word, 'into waiting list'
+                undetermined_words.append((word, py, freq))
+                continue
+        print 'adding', word
+        print >> output, word, py
+
+    with codecs.open('./waiting_list.txt', 'w', 'utf-8') as waiting_list:
+        for word, py, freq in undetermined_words:
+            print >> waiting_list, word, py, freq
+            
+def filter_list(filename, output_filename, threshold = 30000):
+    f = codecs.open(filename, 'r', 'utf-8')
+    output = codecs.open(output_filename, 'a+', 'utf-8')
+    seek_to_last_word(f, output)
+    
+    undetermined_words = []
+    
+    get_word_freq = get_search_engine('baidu')
+    is_word = get_search_engine('baidu-dict')
+    for line in f:
+        word, freq = line.split()
+        keep_it = False
+        if len(word) == 1:
+            keep_it = True
+        else:
+            freq = get_word_freq(word)
+            if freq > threshold or is_word(word):
+                keep_it = True
+            elif freq == 0:
+                keep_it = False
+                print 'removing', word
+            else:
+                print 'put', word, 'into waiting list'
+                undetermined_words.append((word, freq))
+        
+        if keep_it:
+            print 'adding', word
+            print >> output, word, freq
+
+    with codecs.open('/tmp/waiting_list.txt', 'w', 'utf-8') as waiting_list:
+        for word, freq in undetermined_words:
+            print >> waiting_list, word, freq
+
+def test_get_freq():
     google_filter = SearchEngineFilter(Google())
     for word in [u'人间', u'大炮']:
         print word, ':', google_filter.get_freq(word)
+
+if __name__ == "__main__":
+    #filter_dict('dict.utf8', 'dict.filter-30000.utf-8')
+    filter_list('/tmp/new.utf-8', '/tmp/words-filter.txt')

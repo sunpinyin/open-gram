@@ -44,16 +44,17 @@ class WordExtractor(object):
             words.add(set(line.split(u'/')))
         self.process_words(words)
 
-    def process_words(self, words, threshold=1000000):
+    def process_words(self, words, threshold=30000):
         for word in words:
             if self.filters.keep(word) and \
                word not in self.new_words:
-                logging.info("%s\tadded into db" % word)
                 if self.get_word_freq:
                     freq = self.get_word_freq(word)
                     if freq > threshold:
+                        logging.info("%s\tadded into db" % word)
                         self.new_words[word] = freq
                 else:
+                    logging.info("%s\tadded into db" % word)
                     self.new_words[word] = 1
                 self.n_added += 1
             else:
