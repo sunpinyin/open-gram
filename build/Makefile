@@ -13,4 +13,4 @@ clean:
 	$(RM) *.py
 
 test: clean install
-	python extract_word.py -i ../data/raw -o ./newords.db --verbose
+	python extract_word.py -i ../data/raw -o ./newords.db -s baidu --verbose

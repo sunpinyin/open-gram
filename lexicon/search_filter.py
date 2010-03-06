@@ -58,7 +58,7 @@ class Baidu(SearchEngine):
            "202.108.22.43":0,
            "220.181.38.4":0,
            "119.75.216.30":0}
-    re_hit = re.compile(u"找到相关网页约([0-9\,]+)篇")
+    re_hit = re.compile(u"找到相关网页约?([0-9\,]+)篇")
     re_miss = re.compile(u"没有找到与.*相关的网页")
     encoding = "gbk"
     
@@ -172,11 +172,11 @@ def get_search_engine(engine='baidu'):
 def seek_to_last_word(input, output):
     last_word = None
     for line in output:
-        last_word, py = line.split()
+        last_word, freq = line.split()
     if last_word is None:
         return
     for line in input:
-        word, py = line.split()
+        word, py = line.strip().split()
         if word == last_word:
             break
     else:
@@ -202,7 +202,6 @@ def filter_dict(filename, output_filename, threshold = 30000):
     undetermined_words = []
     
     get_word_freq = get_search_engine('baidu')
-    is_word = get_search_engine('baidu-dict')
     for line in f:
         word, py = line.split()
         keep_it = False
@@ -210,14 +209,8 @@ def filter_dict(filename, output_filename, threshold = 30000):
             pass
         else:
             freq = get_word_freq(word)
-            if freq > threshold or is_word(word):
-                pass
-            elif freq == 0:
+            if freq == 0:
                 print 'removing', word
-                continue
-            else:
-                print 'put', word, 'into waiting list'
-                undetermined_words.append((word, py, freq))
                 continue
         print 'adding', word
         print >> output, word, py
@@ -236,7 +229,7 @@ def filter_list(filename, output_filename, threshold = 30000):
     get_word_freq = get_search_engine('baidu')
     is_word = get_search_engine('baidu-dict')
     for line in f:
-        word, freq = line.split()
+        word = line.strip()
         keep_it = False
         if len(word) == 1:
             keep_it = True
