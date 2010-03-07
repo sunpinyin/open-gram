@@ -8,7 +8,7 @@ def normalize_py(py):
     '''convert cc-cedicts py notation to that of sunpinyin
     '''
     if py.find(':'):
-        return py.replace('u:e', 'u').replace('u:', 'v')
+        return py.replace('u:e', 'ue').replace('u:', 'v')
     else:
         return py
 
