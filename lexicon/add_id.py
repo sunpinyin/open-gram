@@ -7,47 +7,27 @@ from optparse import OptionParser
 def normalize_py(py):
     '''convert cc-cedicts py notation to that of sunpinyin
     '''
-    if py.find(':'):
+    if py.find(':') != -1:
         return py.replace('u:e', 'ue').replace('u:', 'v')
     else:
         return py
 
-def init_duoyinzi():
-    duoyinzi = {}
-    with codecs.open('duoyinzi.utf8', 'r', 'utf-8') as f:
+def init_hanzi_table():
+    hanzi_table = {}
+    with codecs.open('hanzi_table.utf8', 'r', 'utf-8') as f:
         for line in f:
             hz, pys = line.split(' ', 1)
-            duoyinzi[hz] = pys
-    with codecs.open('duoyinzi2.utf8', 'r', 'utf-8') as f:
-        for line in f:
-            hz, pys = line.split(' ', 1)
-            if len(pys.split()) > 1 and hz not in duoyinzi:
-                duoyinzi[hz] = pys
+            hanzi_table[hz] = pys
             
-    return duoyinzi
+    return hanzi_table
 
-def init_py_table():
-    hzs = {}
-    with codecs.open('duoyinzi2.utf8', 'r', 'utf-8') as f:
-        for line in f:
-            hz, pys = line.split(' ', 1)
-            hzs[hz] = pys
-
-    return hzs
-
-duoyinzi = init_duoyinzi()
-hzs = init_py_table()
+hanzi_table = init_hanzi_table()
 
 def get_hanzi_py(hz, last_py, n_saw):
     try:
-        py = duoyinzi[hz] if n_saw > 1 else last_py
-        #assert duoyinzi[hz] == last_py
+        py = hanzi_table[hz] if n_saw > 1 else last_py
     except:
-        try:
-            py = hzs[hz]
-        except:
-            print '===>', hz
-            raise
+        print '===>', hz
     return normalize_py(py.strip())
 
 def main(fname_in, fname_out):

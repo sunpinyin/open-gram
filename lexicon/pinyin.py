@@ -6811,9 +6811,9 @@ def hanzi2pinyin(hz):
     if char_ord in PinYinDict:
         return PinYinDict[char_ord]
     else:
-        return hz
+        raise Exception("unknown hz: %s" % hz)
     
-def word2pinyin(hanzi):
+def word2pinyin(word):
     """ hanzi should be unicode string"""
     return "'".join([hanzi2pinyin(hz) for hz in word])
 

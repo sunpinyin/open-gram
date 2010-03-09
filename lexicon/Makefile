@@ -1,17 +1,23 @@
 .PHONY: clean
 
-all: dict.index
+DATA_DIR=../data
+
+all: $(DATA_DIR)/dict.index
 
 clean:
-	$(RM) dict.sort dict.shrinked dict.index
+	$(RM) $(DATA_DIR)/dict.sort $(DATA_DIR)/dict.shrinked $(DATA_DIR)/dict.index
 
-dict.sort: dict.full
+$(DATA_DIR)/dict.sort: $(DATA_DIR)/dict.full
 	python sort.py -f $^ -t dict.tmp
 	uniq < dict.tmp > $@
 	rm dict.tmp
 
-dict.shrinked: dict.sort
+$(DATA_DIR)/dict.shrinked: $(DATA_DIR)/dict.sort
 	python shrink.py -f $^ -t $@
 
-dict.index: dict.shrinked dict_head.utf8
+$(DATA_DIR)/dict.index: $(DATA_DIR)/dict.shrinked dict_head.utf8
 	python add_id.py -f $^ -t $@
+
+merge: $(DATA_DIR)/newords.utf8 $(DATA_DIR)/dict.full
+	python merge.py -f $(DATA_DIR)/dict.full -n $(DATA_DIR)/newords.utf8 -t dict.tmp
+	cat dict.tmp >> $(DATA_DIR)/dict.full
