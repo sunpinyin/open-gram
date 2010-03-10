@@ -29,7 +29,13 @@ def merge(in_fname, new_fname, out_fname):
     get_word_freq = get_search_engine('baidu')
     for w in new_words:
         py = word2pinyin(w)
-        freq = get_word_freq(w)
+        while True:
+            try:
+                freq = get_word_freq(w)
+            except:
+                continue
+            else:
+                break
         print w, py, freq
         print >> out_file, w, py, freq
         

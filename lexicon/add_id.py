@@ -8,9 +8,10 @@ def normalize_py(py):
     '''convert cc-cedicts py notation to that of sunpinyin
     '''
     if py.find(':') != -1:
-        return py.replace('u:e', 'ue').replace('u:', 'v')
-    else:
-        return py
+        py = py.replace('u:e', 'ue')
+        if py.endswith('u:'):
+            py = py.replace('u:', 'v')
+    return py
 
 def init_hanzi_table():
     hanzi_table = {}
