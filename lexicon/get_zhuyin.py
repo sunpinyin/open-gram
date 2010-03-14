@@ -303,6 +303,11 @@ vowels = {u'ā':'a1',
           u'ióng':'iong2',
           u'iǒng':'iong3',
           u'iòng':'iong4',
+
+          u'ǖ':'v1',
+          u'ǘ':'v2',
+          u'ǚ':'v3',
+          u'ǜ':'v4'
          }
 
 def normalize_word_zhuyin(zhuyin):
