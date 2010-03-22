@@ -7,6 +7,8 @@ from optparse import OptionParser
 def normalize_py(py):
     '''convert cc-cedicts py notation to that of sunpinyin
     '''
+    if py[-1] in '012345':
+        py = py[:-1]
     if py.find(':') != -1:
         py = py.replace('u:e', 'ue')
         if py.endswith('u:'):
