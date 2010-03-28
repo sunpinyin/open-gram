@@ -14,7 +14,10 @@ def merge(in_fname, new_fname, out_fname):
     in_file = codecs.open(in_fname, 'r', 'utf-8')
     existing_words = set()
     for line in in_file:
-        word, py, freq = line.split()
+        try:
+            word, py, freq = line.split()
+        except:
+            print line
         existing_words.add(word)
         
     new_file = codecs.open(new_fname, 'r', 'utf-8')
