@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#-*- coding: utf-8 -*-
 
 from __future__ import with_statement
 import codecs
@@ -7,6 +8,7 @@ from optparse import OptionParser
 def normalize_py(py):
     '''convert cc-cedicts py notation to that of sunpinyin
     '''
+    py = py.replace(u'üe', u'ue')
     if py.find(':') != -1:
         py = py.replace('u:e', 'ue')
         if py.endswith('u:'):

@@ -135,10 +135,11 @@ def get_hanzi_zhuyin():
     parser = URLLister()
     for line in inf:
         parser.reset()
-        zi, pys = line.split(' ', 1)
+        zi = line.strip()
         parser.feed(post_zdic(zi).read())
         zhuyins = parser.get_zhuyin()
         zhuyins = ' '.join(normalize_hanzi_zhuyin(zhuyin) for zhuyin in zhuyins)
+        #zhuyins = ' '.join(zhuyins)
         print zi, zhuyins
         print >> out, zi, zhuyins
 
@@ -373,4 +374,4 @@ def get_zi():
 if __name__ == '__main__':
     reload(sys)
     sys.setdefaultencoding('utf-8')
-    validate_words()
+    get_hanzi_zhuyin()
