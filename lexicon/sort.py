@@ -44,11 +44,17 @@ def word_cmp(w1, w2):
     else:
         return 0
 
-def belongs_to_cjk_compatibility(char):
+def should_ignore(char):
     '''
-    http://www.unicode.org/charts/PDF/UF900.pdf
+    CJK  Extension B/C
+    CJK Compatibility Ideographs
+    http://www.unicode.org/charts/
     '''
-    return u'\uf900' <= char <= u'\ufaff'
+    # cjk compatibility ideographs
+    if char > u'\uffff' or u'\uf900' <= char <= u'\ufaff':
+        return True
+    else:
+        return False
 
 def main(input_f, output_f):
     words = []
@@ -59,7 +65,7 @@ def main(input_f, output_f):
                 word = parts[0]
                 freq = parts[-1]
                 py = ' '.join(parts[1:-1])
-                if len(word) == 1 and belongs_to_cjk_compatibility(word[0]):
+                if len(word) == 1 and should_ignore(word[0]):
                     continue
                 words.append((word, py, freq))
             except Exception, e:
