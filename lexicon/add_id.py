@@ -19,6 +19,9 @@ def normalize_py(py):
         parts[0] = py[:-1]
     return ':'.join(parts)
 
+def normalize_pys(pys):
+    return "'".join([normalize_py(py) for py in pys.split("'")])
+
 def init_hanzi_table():
     hanzi_table = {}
     with codecs.open('hanzi_table.utf8', 'r', 'utf-8') as f:
@@ -34,7 +37,7 @@ def get_hanzi_py(hz, last_py, n_saw):
     try:
         py = hanzi_table[hz] if n_saw > 1 else last_py
     except:
-        print '===>', hz
+        py = last_py
     return normalize_py(py.strip())
 
 def main(fname_in, fname_out):
@@ -49,7 +52,7 @@ def main(fname_in, fname_out):
     last_py = None
     n_saw = 0
     for line in dict_in:
-        word, pys = line.split()
+        word, syls = line.split(' ', 1)
         if last_hz:
             if word != last_hz:
                 py = get_hanzi_py(last_hz, last_py, n_saw)
@@ -63,11 +66,11 @@ def main(fname_in, fname_out):
         
         if len(word) == 1:
             last_hz = word
-            last_py = pys
+            last_py = syls
             n_saw = 1
             continue
-        pys = "'".join([normalize_py(py) for py in pys.split("'")])
-        print >> dict_out, word, index, pys
+        syls = ' '.join(normalize_pys(pys) for pys in syls.split())
+        print >> dict_out, word, index, syls
         index += 1
     if last_hz:
         py = get_hanzi_py(last_hz, last_py, n_saw)

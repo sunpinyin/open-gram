@@ -13,13 +13,16 @@ def shrink(in_fname, out_fname):
     words_in = 0
     words_out = 0
     for line in in_file:
-        word, py, freq = line.split()
+        parts = line.split()
+        word = parts[0]
+        freq = parts[-1]
+        py = parts[1:-1]
         words_in += 1
         if len(word) > 1 and int(freq) < 8000:
             pass
         else:
             words_out += 1
-            print >> out_file, word, py
+            print >> out_file, word, ' '.join(py)
     print "%d => %d" % (words_in, words_out)
     
 if __name__ == '__main__':

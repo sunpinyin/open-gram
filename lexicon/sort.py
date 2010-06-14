@@ -44,20 +44,28 @@ def word_cmp(w1, w2):
     else:
         return 0
 
+def belongs_to_cjk_compatibility(char):
+    '''
+    http://www.unicode.org/charts/PDF/UF900.pdf
+    '''
+    return u'\uf900' <= char <= u'\ufaff'
+
 def main(input_f, output_f):
     words = []
     with codecs.open(input_f, 'r', 'utf-8') as f:
-        for line in f:
+        for i, line in enumerate(f):
             try:
                 parts = line.split()
                 word = parts[0]
                 freq = parts[-1]
-                py = parts[1:-1]
+                py = ' '.join(parts[1:-1])
+                if len(word) == 1 and belongs_to_cjk_compatibility(word[0]):
+                    continue
                 words.append((word, py, freq))
             except Exception, e:
-                print e, line
+                print e, i, ':', line
 
-    print len(words), "sorted"
+    print len(words), "to sort in", input_f
     words.sort(key=operator.itemgetter(0), cmp=word_cmp)
     
     with codecs.open(output_f, 'w', 'utf-8') as f:

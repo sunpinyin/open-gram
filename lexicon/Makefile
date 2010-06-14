@@ -2,10 +2,10 @@
 
 DATA_DIR=../data
 
-all: $(DATA_DIR)/dict.index
+all: $(DATA_DIR)/dict.utf8
 
 clean:
-	$(RM) $(DATA_DIR)/dict.sort $(DATA_DIR)/dict.shrinked $(DATA_DIR)/dict.index
+	$(RM) $(DATA_DIR)/dict.sort $(DATA_DIR)/dict.shrinked $(DATA_DIR)/dict.utf8
 
 $(DATA_DIR)/dict.sort: $(DATA_DIR)/dict.full
 	python sort.py -f $^ -t dict.tmp
@@ -15,7 +15,7 @@ $(DATA_DIR)/dict.sort: $(DATA_DIR)/dict.full
 $(DATA_DIR)/dict.shrinked: $(DATA_DIR)/dict.sort
 	python shrink.py -f $^ -t $@
 
-$(DATA_DIR)/dict.index: $(DATA_DIR)/dict.shrinked dict_head.utf8
+$(DATA_DIR)/dict.utf8: $(DATA_DIR)/dict.shrinked dict_head.utf8
 	python add_id.py -f $^ -t $@
 
 merge: $(DATA_DIR)/newords.utf8 $(DATA_DIR)/dict.full
