@@ -49,10 +49,13 @@ def main(input_f, output_f):
     with codecs.open(input_f, 'r', 'utf-8') as f:
         for line in f:
             try:
-                word, py, freq = line.split()
+                parts = line.split()
+                word = parts[0]
+                freq = parts[-1]
+                py = parts[1:-1]
                 words.append((word, py, freq))
-            except:
-                print line
+            except Exception, e:
+                print e, line
 
     print len(words), "sorted"
     words.sort(key=operator.itemgetter(0), cmp=word_cmp)
