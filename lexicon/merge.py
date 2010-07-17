@@ -15,7 +15,7 @@ def merge(in_fname, new_fname, out_fname):
     existing_words = set()
     for line in in_file:
         try:
-            word, py, freq = line.split()
+            word = line.split(' ', 1)[0]
         except:
             print line
         existing_words.add(word)
