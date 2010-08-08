@@ -4061,7 +4061,7 @@ PinYinDict = {
 '塍':('cheng',), 
 '剑':('jian',), 
 '珐':('fa',), 
-'靓':('jing',), 
+'靓':('jing', 'liang'), 
 '呕':('ou',), 
 '痔':('zhi',), 
 '还':('hai', 'huan'), 
