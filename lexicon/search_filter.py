@@ -49,7 +49,7 @@ class SearchEngine(object):
         
 class Baidu(SearchEngine):
     url = "http://%s/s?%s"
-    ips = {"121.14.88.14":0,
+    ips = {"220.181.111.147":0,
            "121.14.89.14":0,
            "119.75.213.50":0,
            "119.75.213.51":0,
@@ -58,7 +58,7 @@ class Baidu(SearchEngine):
            "202.108.22.43":0,
            "220.181.38.4":0,
            "119.75.216.30":0}
-    re_hit = re.compile(u"找到相关网页约?([0-9\,]+)篇")
+    re_hit = re.compile(u"找到相关结果约?([0-9\,]+)个")
     re_miss = re.compile(u"没有找到与.*相关的网页")
     encoding = "gbk"
     
