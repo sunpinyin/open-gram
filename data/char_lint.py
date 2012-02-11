@@ -26,8 +26,14 @@ def check():
     print('done')
 
 def parse_line(line):
-    fields = unicode(line, 'utf8').split(u' ')
-    pylist = [field[:field.find(':')] for field in fields[1:]]
+    fields = unicode(line[:-1], 'utf8').split(u' ')
+    pylist = []
+    for field in fields[1:]:
+        pos = field.find(':')
+        if pos < 0:
+            pylist.append(field)
+        else:
+            pylist.append(field[:pos])
     return fields[0], pylist
 
 def main():

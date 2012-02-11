@@ -1924,6 +1924,7 @@
 叨 dao:98.3656% tao:1.6344%
 徳 de
 德 de
+嘚 de
 悳 de
 淂 de
 锝 de
@@ -12929,6 +12930,7 @@
 镡 xin
 阠 xin
 馨 xin
+䜣 xin
 馫 xin
 鬵 xin
 莘 xin:80.7963% shen:19.2037%
@@ -13833,6 +13835,7 @@
 俋 yi
 倚 yi
 偯 yi
+祎 yi
 儀 yi
 億 yi
 儗 yi
@@ -24768,7 +24771,7 @@
 风湿 feng'shi
 丰收 feng'shou
 枫树 feng'shu
-焚书 feng'shu
+焚书 fen'shu
 风霜 feng'shuang
 丰水 feng'shui
 风水 feng'shui
@@ -32365,7 +32368,7 @@
 可人 ke'ren
 客人 ke'ren
 克山 ke'shan
-喀山 ke'shan
+喀山 ka'shan
 客商 ke'shang
 课上 ke'shang
 可使 ke'shi
@@ -36262,7 +36265,7 @@
 那面 na'mian
 那名 na'ming
 那末 na'mo
-南无 na'mo:23.3689% nan'wu:76.6311%
+南无阿弥陀佛 na'mo'a'mi'tuo'fo:13.3689% nan'wu'a'mi'tuo'fo:86.6311%
 娜娜 na'na
 那男 na'nan
 哪呢 na'ne
@@ -37369,7 +37372,7 @@
 咆哮 pao'xiao
 跑鞋 pao'xie
 抛压 pao'ya
-龅牙 pao'ya
+龅牙 bao'ya
 泡影 pao'ying
 抛在 pao'zai
 泡在 pao'zai
@@ -43298,7 +43301,7 @@
 遂宁 sui'ning
 碎片 sui'pian
 遂平 sui'ping
-水枪 sui'qiang
+水枪 shui'qiang
 虽然 sui'ran
 随身 sui'shen
 岁时 sui'shi
@@ -45657,7 +45660,6 @@
 为人 wei'ren
 伟人 wei'ren
 委任 wei'ren
-韦利 wei'ri
 为荣 wei'rong
 微软 wei'ruan
 微弱 wei'ruo
@@ -51875,7 +51877,7 @@
 杂粮 za'liang
 杂乱 za'luan
 砸门 za'men
-咱们 za'men:3.5448% zan'men:96.4552%
+咱们 zan'men
 杂念 za'nian
 杂牌 za'pai
 杂事 za'shi
@@ -54794,7 +54796,7 @@
 子夜 zi'ye
 子怡 zi'yi
 字义 zi'yi
-字音 zi'yi
+字音 zi'yin
 恣意 zi'yi
 紫衣 zi'yi
 自已 zi'yi
@@ -55405,7 +55407,7 @@
 安装完 an'zhuang'wan
 盎格鲁 ang'ge'lu
 奥巴马 ao'ba'ma
-奥黛丽 ao'da'li
+奥黛丽 ao'dai'li
 敖德萨 ao'de'sa
 奥德赛 ao'de'sai
 奥地利 ao'di'li
@@ -58521,7 +58523,7 @@
 纪录片 ji'lu'pian
 记录片 ji'lu'pian
 既没有 ji'mei'you
-社民党 ji'min'dang
+社民党 she'min'dang
 济南市 ji'nan'shi
 几内亚 ji'nei'ya
 吉尼斯 ji'ni'si
@@ -60867,7 +60869,7 @@
 日光灯 ri'guang'deng
 日记本 ri'ji'ben
 日记门 ri'ji'men
-日喀则 ri'ke'ze
+日喀则 ri'ka'ze
 日内瓦 ri'nei'wa
 日心说 ri'xin'shuo
 日用品 ri'yong'pin
@@ -61548,7 +61550,7 @@
 水电站 shui'dian'zhan
 谁都会 shui'dou'hui
 水浒传 shui'hu'zhuan
-绥化市 shui'hua'shi
+绥化市 sui'hua'shi
 水环境 shui'huan'jing
 谁叫你 shui'jiao'ni
 睡觉前 shui'jiao'qian
@@ -66540,7 +66542,7 @@
 格拉斯哥 ge'la'si'ge
 葛莱美奖 ge'lai'mei'jiang
 格兰芬多 ge'lan'fen'duo
-格林威治 ge'lin'ni'zhi
+格林威治 ge'lin'wei'zhi
 格林尼治 ge'lin'ni'zhi
 格林斯潘 ge'lin'si'pan
 格陵兰岛 ge'ling'lan'dao
@@ -67680,7 +67682,7 @@
 交警大队 jiao'jing'da'dui
 交警支队 jiao'jing'zhi'dui
 交口称赞 jiao'kou'cheng'zan
-胶囊墓地 jiao'lang'mu'di
+胶囊墓地 jiao'nang'mu'di
 交流活动 jiao'liu'huo'dong
 交流平台 jiao'liu'ping'tai
 骄奢淫逸 jiao'she'yin'yi
@@ -68289,7 +68291,7 @@
 库仑定律 ku'lun'ding'lv
 哭笑不得 ku'xiao'bu'de
 苦心经营 ku'xin'jing'ying
-夸父逐日 kua'fu'zhui'ri
+夸父逐日 kua'fu'zhu'ri
 跨国公司 kua'guo'gong'si
 跨国企业 kua'guo'qi'ye
 快递公司 kuai'di'gong'si
@@ -68485,7 +68487,7 @@
 两个孩子 liang'ge'hai'zi
 两个男人 liang'ge'nan'ren
 两个女人 liang'ge'nv'ren
-两广总督 liang'guan'zong'du
+两广总督 liang'guang'zong'du
 良好形象 liang'hao'xing'xiang
 两河流域 liang'he'liu'yu
 两极分化 liang'ji'fen'hua
@@ -68904,7 +68906,7 @@
 目标市场 mu'biao'shi'chang
 目不暇接 mu'bu'xia'jie
 目不转睛 mu'bu'zhuan'jing
-牡丹江市 mu'dang'jiang'shi
+牡丹江市 mu'dan'jiang'shi
 目瞪口呆 mu'deng'kou'dai
 穆罕默德 mu'han'mo'de
 幕后花絮 mu'hou'hua'xu
@@ -73436,7 +73438,7 @@
 弗拉基米尔 fu'la'ji'mi'er
 弗雷德里克 fu'lei'de'li'ke
 伏罗希洛夫 fu'luo'xi'luo'fu
-冈本果奈美 gang'ben'zhen'nai'mei
+冈本果奈美 gang'ben'guo'nai'mei
 高尔夫球场 gao'er'fu'qiu'chang
 高分子化学 gao'fen'zi'hua'xue
 戈尔巴乔夫 ge'er'ba'qiao'fu
@@ -73685,7 +73687,7 @@
 重生之大涅磐 chong'sheng'zhi'da'nie'pan
 春秋战国时代 chun'qiu'zhan'guo'shi'dai
 大连理工大学 da'lian'li'gong'da'xue
-大兴安岭地区 da'xing'an'lin'di'qu
+大兴安岭地区 da'xing'an'ling'di'qu
 当幸福来敲门 dang'xing'fu'lai'qiao'men
 帝国理工学院 di'guo'li'gong'xue'yuan
 地下城与勇士 di'xia'cheng'yu'yong'shi
