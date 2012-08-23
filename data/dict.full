@@ -7183,11 +7183,11 @@
 鑾 luan
 鸞 luan
 鸾 luan
-掠 lue
-略 lue
-畧 lue
-鋝 lue
-锊 lue
+掠 lve
+略 lve
+畧 lve
+鋝 lve
+锊 lve
 仑 lun
 伦 lun
 侖 lun
@@ -8304,9 +8304,9 @@
 暖 nuan
 渜 nuan
 餪 nuan
-瘧 nue
-虐 nue
-疟 nue:91.1760% yao:8.8240%
+瘧 nve
+虐 nve
+疟 nve:91.1760% yao:8.8240%
 傩 nuo
 儺 nuo
 懦 nuo
@@ -17434,7 +17434,7 @@
 保姆 bao'mu
 暴怒 bao'nu
 保暖 bao'nuan
-暴虐 bao'nue
+暴虐 bao'nve
 包皮 bao'pi
 报批 bao'pi
 薄片 bao'pian
@@ -19384,7 +19384,7 @@
 测绘 ce'hui
 测控 ce'kong
 测量 ce'liang
-策略 ce'lue
+策略 ce'lve
 侧面 ce'mian
 侧目 ce'mu
 测评 ce'ping
@@ -21119,7 +21119,7 @@
 促进 cu'jin
 粗口 cu'kou
 粗鲁 cu'lu
-粗略 cu'lue
+粗略 cu'lve
 粗气 cu'qi
 促使 cu'shi
 猝死 cu'si
@@ -21453,7 +21453,7 @@
 大陆 da'lu
 大乱 da'luan
 打乱 da'luan
-大略 da'lue
+大略 da'lve
 大罗 da'luo
 大妈 da'ma
 大马 da'ma
@@ -21882,7 +21882,7 @@
 淡了 dan'le
 单恋 dan'lian
 胆量 dan'liang
-胆略 dan'lue
+胆略 dan'lve
 丹麦 dan'mai
 但没 dan'mei
 耽美 dan'mei
@@ -24282,7 +24282,7 @@
 房里 fang'li
 放量 fang'liang
 放疗 fang'liao
-方略 fang'lue
+方略 fang'lve
 放慢 fang'man
 仿冒 fang'mao
 访美 fang'mei
@@ -25991,7 +25991,7 @@
 巩俐 gong'li
 工龄 gong'ling
 公路 gong'lu
-攻略 gong'lue
+攻略 gong'lve
 功率 gong'lv
 工贸 gong'mao
 拱门 gong'men
@@ -28064,7 +28064,7 @@
 呼噜 hu'lu
 葫芦 hu'lu
 胡乱 hu'luan
-忽略 hu'lue
+忽略 hu'lve
 呼玛 hu'ma
 虎门 hu'men
 湖面 hu'mian
@@ -29960,7 +29960,7 @@
 见谅 jian'liang
 建龙 jian'long
 简陋 jian'lou
-简略 jian'lue
+简略 jian'lve
 贱卖 jian'mai
 减慢 jian'man
 健美 jian'mei
@@ -30660,7 +30660,7 @@
 接龙 jie'long
 揭露 jie'lu
 结庐 jie'lu
-劫掠 jie'lue
+劫掠 jie'lve
 杰伦 jie'lun
 结论 jie'lun
 戒律 jie'lv
@@ -34223,7 +34223,7 @@
 玲玲 ling'ling
 玲珑 ling'long
 凌乱 ling'luan
-领略 ling'lue
+领略 ling'lve
 零落 ling'luo
 灵猫 ling'mao
 灵敏 ling'min
@@ -34690,14 +34690,14 @@
 卵形 luan'xing
 乱用 luan'yong
 卵子 luan'zi
-略带 lue'dai
-略低 lue'di
-掠夺 lue'duo
-掠过 lue'guo
-略微 lue'wei
-略显 lue'xian
-略阳 lue'yang
-略有 lue'you
+略带 lve'dai
+略低 lve'di
+掠夺 lve'duo
+掠过 lve'guo
+略微 lve'wei
+略显 lve'xian
+略阳 lve'yang
+略有 lve'you
 伦巴 lun'ba
 轮船 lun'chuan
 轮到 lun'dao
@@ -36071,7 +36071,7 @@
 谋划 mou'hua
 某家 mou'jia
 牟利 mou'li
-谋略 mou'lue
+谋略 mou'lve
 谋面 mou'mian
 某某 mou'mou
 谋求 mou'qiu
@@ -37052,9 +37052,9 @@
 暖气 nuan'qi
 暖身 nuan'shen
 暖意 nuan'yi
-虐待 nue'dai
-疟疾 nue'ji
-虐鱼 nue'yu
+虐待 nve'dai
+疟疾 nve'ji
+虐鱼 nve'yu
 挪动 nuo'dong
 诺顿 nuo'dun
 懦夫 nuo'fu
@@ -38711,7 +38711,7 @@
 亲临 qin'lin
 秦岭 qin'ling
 秦陵 qin'ling
-侵略 qin'lue
+侵略 qin'lve
 亲们 qin'men
 亲密 qin'mi
 勤勉 qin'mian
@@ -41295,7 +41295,7 @@
 圣灵 sheng'ling
 生灵 sheng'ling
 生路 sheng'lu
-省略 sheng'lue
+省略 sheng'lve
 胜率 sheng'lv
 生猛 sheng'meng
 生米 sheng'mi
@@ -41674,7 +41674,7 @@
 十六 shi'liu
 石榴 shi'liu
 实录 shi'lu
-事略 shi'lue
+事略 shi'lve
 试论 shi'lun
 失落 shi'luo
 是吗 shi'ma
@@ -42160,7 +42160,7 @@
 收纳 shou'na
 受难 shou'nan
 首脑 shou'nao
-受虐 shou'nue
+受虐 shou'nve
 手帕 shou'pa
 收盘 shou'pan
 手捧 shou'peng
@@ -42960,7 +42960,7 @@
 死你 si'ni
 四年 si'nian
 思念 si'nian
-肆虐 si'nue
+肆虐 si'nve
 斯诺 si'nuo
 四平 si'ping
 撕破 si'po
@@ -47211,7 +47211,7 @@
 乡邻 xiang'lin
 相邻 xiang'lin
 香炉 xiang'lu
-详略 xiang'lue
+详略 xiang'lve
 想买 xiang'mai
 相貌 xiang'mao
 乡民 xiang'min
@@ -49322,7 +49322,7 @@
 要了 yao'le
 药理 yao'li
 要领 yao'ling
-要略 yao'lue
+要略 yao'lve
 要吗 yao'ma
 姚麦 yao'mai
 要买 yao'mai
@@ -52363,7 +52363,7 @@
 占领 zhan'ling
 展露 zhan'lu
 战乱 zhan'luan
-战略 zhan'lue
+战略 zhan'lve
 战马 zhan'ma
 沾满 zhan'man
 站内 zhan'nei
@@ -54383,7 +54383,7 @@
 赚了 zhuan'le
 专利 zhuan'li
 转录 zhuan'lu
-传略 zhuan'lue
+传略 zhuan'lve
 专卖 zhuan'mai
 专门 zhuan'men
 转门 zhuan'men
@@ -54722,7 +54722,7 @@
 自摸 zi'mo
 字幕 zi'mu
 字母 zi'mu
-自虐 zi'nue
+自虐 zi'nve
 子女 zi'nv
 自拍 zi'pai
 自评 zi'ping
@@ -58619,7 +58619,7 @@
 甲壳虫 jia'ke'chong
 加勒比 jia'le'bi
 家乐福 jia'le'fu
-伽利略 jia'li'lue
+伽利略 jia'li'lve
 家里面 jia'li'mian
 家里人 jia'li'ren
 嘉陵江 jia'ling'jiang
@@ -60344,7 +60344,7 @@
 奴隶制 nu'li'zhi
 奴隶主 nu'li'zhu
 暖暖的 nuan'nuan'de
-虐猪门 nue'zhu'men
+虐猪门 nve'zhu'men
 诺贝尔 nuo'bei'er
 诺丁汉 nuo'ding'han
 诺基亚 nuo'ji'ya
@@ -60656,7 +60656,7 @@
 亲和力 qin'he'li
 秦皇岛 qin'huang'dao
 禽流感 qin'liu'gan
-侵略者 qin'lue'zhe
+侵略者 qin'lve'zhe
 亲民党 qin'min'dang
 秦穆公 qin'mu'gong
 亲切感 qin'qie'gan
@@ -60772,7 +60772,7 @@
 区政府 qu'zheng'fu
 驱逐舰 qu'zhu'jian
 全方位 quan'fang'wei
-全攻略 quan'gong'lue
+全攻略 quan'gong'lve
 全国性 quan'guo'xing
 全家福 quan'jia'fu
 全家人 quan'jia'ren
@@ -61216,7 +61216,7 @@
 生力军 sheng'li'jun
 生理学 sheng'li'xue
 胜利者 sheng'li'zhe
-省略号 sheng'lue'hao
+省略号 sheng'lve'hao
 生命力 sheng'ming'li
 生命线 sheng'ming'xian
 声明者 sheng'ming'zhe
@@ -61736,7 +61736,7 @@
 索菲亚 suo'fei'ya
 所高校 suo'gao'xiao
 所具有 suo'ju'you
-缩略图 suo'lue'tu
+缩略图 suo'lve'tu
 所罗门 suo'luo'men
 索罗斯 suo'luo'si
 索马里 suo'ma'li
@@ -63922,8 +63922,8 @@
 展览会 zhan'lan'hui
 战利品 zhan'li'pin
 战列舰 zhan'lie'jian
-战略家 zhan'lue'jia
-战略性 zhan'lue'xing
+战略家 zhan'lve'jia
+战略性 zhan'lve'xing
 詹姆斯 zhan'mu'si
 占便宜 zhan'pian'yi
 站起来 zhan'qi'lai
@@ -64621,7 +64621,7 @@
 走天涯 zou'tian'ya
 走下去 zou'xia'qu
 走一步 zou'yi'bu
-组策略 zu'ce'lue
+组策略 zu'ce'lve
 组成员 zu'cheng'yuan
 祖冲之 zu'chong'zhi
 租出去 zu'chu'qu
@@ -64775,7 +64775,7 @@
 爱憎分明 ai'zeng'fen'ming
 安安静静 an'an'jing'jing
 按部就班 an'bu'jiu'ban
-安大略省 an'da'lue'sheng
+安大略省 an'da'lve'sheng
 安徽大学 an'hui'da'xue
 按揭贷款 an'jie'dai'kuan
 安居乐业 an'ju'le'ye
@@ -66223,7 +66223,7 @@
 发展现状 fa'zhan'xian'zhuang
 发展需要 fa'zhan'xu'yao
 发展迅速 fa'zhan'xun'su
-发展战略 fa'zhan'zhan'lue
+发展战略 fa'zhan'zhan'lve
 发展中心 fa'zhan'zhong'xin
 发展壮大 fa'zhan'zhuang'da
 发展状况 fa'zhan'zhuang'kuang
@@ -66984,7 +66984,7 @@
 国家权力 guo'jia'quan'li
 国家统一 guo'jia'tong'yi
 国家一级 guo'jia'yi'ji
-国家战略 guo'jia'zhan'lue
+国家战略 guo'jia'zhan'lve
 国家政策 guo'jia'zheng'ce
 国家政权 guo'jia'zheng'quan
 国家重点 guo'jia'zhong'dian
@@ -69129,7 +69129,7 @@
 品牌建设 pin'pai'jian'she
 品牌效应 pin'pai'xiao'ying
 品牌形象 pin'pai'xing'xiang
-品牌战略 pin'pai'zhan'lue
+品牌战略 pin'pai'zhan'lve
 拼音文字 pin'yin'wen'zi
 平板电视 ping'ban'dian'shi
 平步青云 ping'bu'qing'yun
@@ -69262,7 +69262,7 @@
 企业形象 qi'ye'xing'xiang
 企业用户 qi'ye'yong'hu
 企业员工 qi'ye'yuan'gong
-企业战略 qi'ye'zhan'lue
+企业战略 qi'ye'zhan'lve
 企业职工 qi'ye'zhi'gong
 气宇轩昂 qi'yu'xuan'ang
 奇珍异宝 qi'zhen'yi'bao
@@ -70723,7 +70723,7 @@
 偷天换日 tou'tian'huan'ri
 偷偷的哭 tou'tou'de'ku
 偷偷摸摸 tou'tou'mo'mo
-投资策略 tou'zi'ce'lue
+投资策略 tou'zi'ce'lve
 投资成本 tou'zi'cheng'ben
 投资风险 tou'zi'feng'xian
 投资公司 tou'zi'gong'si
@@ -72164,7 +72164,7 @@
 英文字母 ying'wen'zi'mu
 影响因素 ying'xiang'yin'su
 营销策划 ying'xiao'ce'hua
-营销策略 ying'xiao'ce'lue
+营销策略 ying'xiao'ce'lve
 营销活动 ying'xiao'huo'dong
 营销模式 ying'xiao'mo'shi
 营销人员 ying'xiao'ren'yuan
@@ -72521,12 +72521,12 @@
 战国时代 zhan'guo'shi'dai
 战火纷飞 zhan'huo'fen'fei
 崭露头角 zhan'lu'tou'jiao
-战略规划 zhan'lue'gui'hua
-战略合作 zhan'lue'he'zuo
-战略决策 zhan'lue'jue'ce
-战略目标 zhan'lue'mu'biao
-战略思想 zhan'lue'si'xiang
-战略意义 zhan'lue'yi'yi
+战略规划 zhan'lve'gui'hua
+战略合作 zhan'lve'he'zuo
+战略决策 zhan'lve'jue'ce
+战略目标 zhan'lve'mu'biao
+战略思想 zhan'lve'si'xiang
+战略意义 zhan'lve'yi'yi
 战术导弹 zhan'shu'dao'dan
 战无不胜 zhan'wu'bu'sheng
 占用空间 zhan'yong'kong'jian
@@ -73645,7 +73645,7 @@
 元素周期表 yuan'su'zhou'qi'biao
 鸳鸯蝴蝶派 yuan'yang'hu'die'pai
 越跳越美丽 yue'tiao'yue'mei'li
-战略轰炸机 zhan'lue'hong'zha'ji
+战略轰炸机 zhan'lve'hong'zha'ji
 战争与和平 zhan'zheng'yu'he'ping
 障碍性贫血 zhang'ai'xing'pin'xue
 政治经济学 zheng'zhi'jing'ji'xue
@@ -73766,7 +73766,7 @@
 中国地质大学 zhong'guo'di'zhi'da'xue
 中国民主同盟 zhong'guo'min'zhu'tong'meng
 中国农业银行 zhong'guo'nong'ye'yin'hang
-中国小说史略 zhong'guo'xiao'shuo'shi'lue
+中国小说史略 zhong'guo'xiao'shuo'shi'lve
 中国政法大学 zhong'guo'zheng'fa'da'xue
 中央民族大学 zhong'yang'min'zu'da'xue
 中央戏剧学院 zhong'yang'xi'ju'xue'yuan
