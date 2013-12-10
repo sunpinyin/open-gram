@@ -9,7 +9,7 @@ dictPy = char_dict_gen(
 )
 
 def fmt_chr_info(c, idx):
-	return " ".join([c, str(idx)] + [py for py in dictPy[c]])
+	return " ".join([c, str(idx)] + sorted([py for py in dictPy[c]]))
 
 for l in sys.stdin:
 	if len(l) == 0:
