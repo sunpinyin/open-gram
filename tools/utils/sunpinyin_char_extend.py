@@ -49,6 +49,9 @@ def py_proc_kHanyuPinyin(pyss):
 	return [py_translate(py_utov(py)) for pys in pyss.split()
 		for py in re.search("(?<=:).*", pys).group(0).split(",")]
 
+def py_proc_kMandarin(pys):
+	return [py_translate(py_utov(py)) for py in pys.split()]
+
 def add_entry_info_to_dict(dictPy, unihanReadings, prop, py_proc):
 	for (c, rawPys) in get_unihan_properties(prop, unihanReadings):
 		if not c in dictPy and ord(c) < 0x20000:
@@ -60,7 +63,8 @@ def char_dict_gen(unihanReadings):
 	[add_entry_info_to_dict(dictPy, unihanReadings, *args) for args in [
 		("kHanyuPinlu", py_proc_kHanyuPinlu),
 		("kXHC1983", py_proc_kXHC1983),
-		("kHanyuPinyin", py_proc_kHanyuPinyin)
+		("kHanyuPinyin", py_proc_kHanyuPinyin),
+		("kMandarin", py_proc_kMandarin)
 	]]
 	return dictPy
 
