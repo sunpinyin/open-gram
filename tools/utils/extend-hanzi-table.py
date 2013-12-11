@@ -2,9 +2,9 @@
 # vim:noet:ts=4:sw=4
 
 import sys
-import sunpinyin_char_extend
+import extend_charmap
 
-dictPy = sunpinyin_char_extend.char_dict_gen(
+dictPy = extend_charmap.char_dict_gen(
 	"Unihan_Readings.txt" if len(sys.argv) < 2 else sys.argv[1]
 )
 
