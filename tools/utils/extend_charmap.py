@@ -55,7 +55,7 @@ def py_proc_kMandarin(pys):
 
 def add_entry_info_to_dict(dictPy, unihanReadings, prop, py_proc):
 	for (c, rawPys) in get_unihan_properties(prop, unihanReadings):
-		if not c in dictPy and ord(c) < 0x20000:
+		if not c in dictPy and ord(c) >= 0x3400 and ord(c) <= 0x7FFF:
 			dictPy[c] = set()
 			dictPy[c].update(py_proc(rawPys))
 
