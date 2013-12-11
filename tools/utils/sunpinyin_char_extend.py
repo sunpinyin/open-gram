@@ -58,6 +58,8 @@ def add_entry_info_to_dict(dictPy, unihanReadings, prop, py_proc):
 			dictPy[c] = set()
 			dictPy[c].update(py_proc(rawPys))
 
+# User interface.
+
 def char_dict_gen(unihanReadings):
 	dictPy = {}
 	[add_entry_info_to_dict(dictPy, unihanReadings, *args) for args in [

@@ -15,9 +15,9 @@
 # A: This should not interfere with our normal use of the tables, other
 #    than visually slightly uncomfortable.
 
+import functools
 import locale
 import sys
-import functools
 
 locale.setlocale(locale.LC_COLLATE, "zh_CN.UTF-8")
 
