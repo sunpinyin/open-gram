@@ -22,14 +22,15 @@ def get_unihan_properties(prop, fname):
 
 # Functions to process pinyin strings.
 
-def py_translate(py):
-	dictPyTrans = str.maketrans(
-		"āáǎàōóǒòēéěèīíǐìūúǔùǖǘǚǜü", "aaaaooooeeeeiiiiuuuuuuuuu"
-	)
-	return py.translate(dictPyTrans)
-
-def py_utov(py):
+def py_u_to_v(py):
 	return re.sub(r"([ln])[ǖǘǚǜü]", r"\1v", py)
+
+def py_rm_accent(py):
+	dictPyTrans = str.maketrans(
+		"āáǎàōóǒòēéěèīíǐìūúǔùǖǘǚǜüḿńňǹ", "aaaaooooeeeeiiiiuuuuuuuuumnnn"
+	)
+	# "m̀" is two characters!
+	return re.sub("m̀", "m", py).translate(dictPyTrans)
 
 def py_rm_tone(py):
 	return re.sub(r"[1-5]$", "", py)
@@ -37,20 +38,20 @@ def py_rm_tone(py):
 # Process related Unihan entries.
 
 def py_proc_kHanyuPinlu(pys):
-	return [py_utov(py_rm_tone(
+	return [py_u_to_v(py_rm_tone(
 		re.match(r"([^0-9]+[1-5])\(([0-9]+)\)", py).group(1)
 	)) for py in pys.split()]
 
 def py_proc_kXHC1983(pys):
-	return [py_translate(py_utov(re.search(r"(?<=:).*", py).group(0)))
+	return [py_rm_accent(py_u_to_v(re.search(r"(?<=:).*", py).group(0)))
 		for py in pys.split()]
 
 def py_proc_kHanyuPinyin(pyss):
-	return [py_translate(py_utov(py)) for pys in pyss.split()
+	return [py_rm_accent(py_u_to_v(py)) for pys in pyss.split()
 		for py in re.search("(?<=:).*", pys).group(0).split(",")]
 
 def py_proc_kMandarin(pys):
-	return [py_translate(py_utov(py)) for py in pys.split()]
+	return [py_rm_accent(py_u_to_v(py)) for py in pys.split()]
 
 def add_entry_info_to_dict(dictPy, unihanReadings, prop, py_proc):
 	for (c, rawPys) in get_unihan_properties(prop, unihanReadings):
