@@ -1,0 +1,94 @@
+--- dict.full	2013-12-13 23:37:28.321017668 +0800
++++ dict.full.corrected	2013-12-13 23:38:28.127580126 +0800
+@@ -1257,7 +1257,7 @@
+ 愛 ai
+ 懓 ai
+ 懝 ai ni
+-暧 ai nuan
++暧 ai
+ 曖 ai
+ 濭 ai kai ke
+ 爱 ai
+@@ -5287,7 +5287,7 @@
+ 挏 dong
+ 栋 dong
+ 棟 dong
+-洞 dong
++洞 dong tong
+ 硐 dong liu
+ 胨 dong
+ 胴 dong
+@@ -13474,8 +13474,8 @@
+ 䤣 lve
+ 圙 lve
+ 寽 lv lve
+-掠 e
+-略 e
++掠 lve
++略 lve
+ 畧 lve
+ 鋝 lve
+ 鋢 lve
+@@ -13663,7 +13663,7 @@
+ 妈 ma
+ 媽 ma
+ 嬤 ma
+-嬷 ma
++嬷 ma mo
+ 擵 mo
+ 蔴 ma
+ 蚂 ma
+@@ -14798,7 +14798,7 @@
+ 䛁 nan
+ 䶲 nan
+ 侽 nan
+-南 nan
++南 na nan
+ 喃 nan
+ 奻 nuan
+ 娚 nan
+@@ -14928,7 +14928,7 @@
+ 㲌 neng
+ 濘 ning
+ 㕶 n ng
+-嗯 n ng
++嗯 en n ng
+ 妮 ni
+ 㞾 ni
+ 㪒 ni
+@@ -15775,7 +15775,7 @@
+ 澼 pi
+ 甓 pi
+ 睤 bi
+-睥 pi
++睥 bi pi
+ 礔 pi
+ 譬 pi
+ 髲 bi
+@@ -20826,7 +20826,7 @@
+ 娪 wu yu
+ 峿 wu yu
+ 庑 wu
+-无 wu
++无 mo wu
+ 梧 wu
+ 毋 wu
+ 洖 wu
+@@ -22358,7 +22358,7 @@
+ 辥 xue yi
+ 靴 xue
+ 鞾 xue
+-㖸 nia xue
++㖸 xue
+ 㧒 yu
+ 㶅 xue
+ 㿱 xue
+@@ -25566,7 +25566,7 @@
+ 䥭 zheng
+ 䦛 zheng
+ 䦶 zheng
+-帧 zheng
++帧 zhen zheng
+ 幀 zheng
+ 政 zheng
+ 正 zheng
