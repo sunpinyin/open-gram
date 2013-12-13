@@ -13,4 +13,5 @@ for l in sys.stdin:
 	fields = l.strip().split()
 	fields = fields[0 : 1] + [str(i)] + fields[1 :]
 	sys.stdout.write(" ".join(fields) + "\n")
+	i += 1
 
