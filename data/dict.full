@@ -3563,7 +3563,7 @@
 裭 chi
 褫 chi
 誃 chi duo yi
-豉 shi
+豉 chi shi
 鉹 chi
 鶒 chi
 齒 chi
@@ -5287,7 +5287,7 @@
 挏 dong
 栋 dong
 棟 dong
-洞 dong
+洞 dong tong
 硐 dong liu
 胨 dong
 胴 dong
@@ -6519,7 +6519,7 @@
 盙 fu
 秿 bu fu pu
 簠 fu
-脯 pu
+脯 fu pu
 腐 fu
 腑 fu
 莆 pu
@@ -7669,7 +7669,7 @@
 䯐 hai
 䱺 hai
 孩 hai
-还 hai:60% huan:40%
+还 hai:98.0072% huan:1.9928%
 還 hai huan
 頦 hai ke
 颏 ke
@@ -7840,7 +7840,7 @@
 航 hang
 苀 hang
 蚢 hang
-行 hang:8.2219% xing:91.7781%
+行 hang:8.2219% heng:1.0000% xing:90.7781%
 貥 hang
 迒 hang
 雽 hu
@@ -13663,7 +13663,7 @@
 妈 ma
 媽 ma
 嬤 ma
-嬷 ma
+嬷 ma mo
 擵 mo
 蔴 ma
 蚂 ma
@@ -14798,7 +14798,7 @@
 䛁 nan
 䶲 nan
 侽 nan
-南 nan
+南 na nan
 喃 nan
 奻 nuan
 娚 nan
@@ -15775,7 +15775,7 @@
 澼 pi
 甓 pi
 睤 bi
-睥 pi
+睥 bi pi
 礔 pi
 譬 pi
 髲 bi
@@ -20826,7 +20826,7 @@
 娪 wu yu
 峿 wu yu
 庑 wu
-无 wu
+无 mo wu
 梧 wu
 毋 wu
 洖 wu
@@ -33366,7 +33366,7 @@
 痘痘 dou'dou
 窦唯 dou'wei
 豆瓣 dou'ban
-豆豉 dou'chi
+豆豉 dou'chi dou'shi
 豆豆 dou'dou
 豆腐 dou'fu
 豆花 dou'hua
@@ -53206,6 +53206,7 @@
 死者 si'zhe
 死猪 si'zhu
 似的 shi'de:76.8978% si'de:23.1022%
+似地 shi'de
 似乎 si'hu
 似火 si'huo
 似是 si'shi
