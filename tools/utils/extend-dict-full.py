@@ -5,7 +5,8 @@ import sys
 import extend_charmap
 
 dictPy = extend_charmap.char_dict_gen(
-	"Unihan_Readings.txt" if len(sys.argv) < 2 else sys.argv[1]
+	"/usr/share/unicode-data/Unihan_Readings.txt" \
+		if len(sys.argv) < 2 else sys.argv[1]
 )
 
 def fmt_chr_info(c):
