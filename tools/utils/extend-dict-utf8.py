@@ -17,7 +17,7 @@ for l in sys.stdin:
 		continue
 	c = l.split()[0]
 	idx = int(l.split()[1])
-	if len(c) == 1 and c in dictPy and not "%" in l:
+	if len(c) == 1 and c in dictPy and not ":" in l:
 		sys.stdout.write(fmt_chr_info(c, idx) + "\n")
 	else:
 		sys.stdout.write(l)
