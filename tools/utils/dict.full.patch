@@ -1,5 +1,5 @@
---- dict.full	2013-12-13 23:37:28.321017668 +0800
-+++ dict.full.corrected	2013-12-13 23:38:28.127580126 +0800
+--- dict.full	2013-12-18 01:52:59.485574383 +0800
++++ dict.full.corrected	2013-12-18 01:52:21.240182728 +0800
 @@ -1257,7 +1257,7 @@
  愛 ai
  懓 ai
@@ -9,6 +9,15 @@
  曖 ai
  濭 ai kai ke
  爱 ai
+@@ -3563,7 +3563,7 @@
+ 裭 chi
+ 褫 chi
+ 誃 chi duo yi
+-豉 shi
++豉 chi shi
+ 鉹 chi
+ 鶒 chi
+ 齒 chi
 @@ -5287,7 +5287,7 @@
  挏 dong
  栋 dong
@@ -18,6 +27,15 @@
  硐 dong liu
  胨 dong
  胴 dong
+@@ -6519,7 +6519,7 @@
+ 盙 fu
+ 秿 bu fu pu
+ 簠 fu
+-脯 pu
++脯 fu pu
+ 腐 fu
+ 腑 fu
+ 莆 pu
 @@ -13474,8 +13474,8 @@
  䤣 lve
  圙 lve
