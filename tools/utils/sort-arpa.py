@@ -3,9 +3,9 @@
 
 import sys
 
-ngrams = []
 dic = {}
-dics = sys.argv[1 :] if len(sys.argv) > 1 else \
+ngrams = []
+dicFiles = sys.argv[1 :] if len(sys.argv) > 1 else \
 	["../../lexicon/dict_head.utf8", "../../data/dict.full"]
 
 def dic_key():
@@ -18,7 +18,7 @@ def proc_ngrams():
 	ngrams.clear()
 
 i = 0
-for f in dics:
+for f in dicFiles:
 	for l in open(f):
 		dic[l.split()[0]] = i
 		i += 1

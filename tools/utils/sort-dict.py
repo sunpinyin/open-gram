@@ -9,7 +9,7 @@
 # A: We will benefit from this when we apply mass modifications to pinyin"s
 #	(if desirable) in the tables.  Using this script, we will be able to see
 #	entries that actually changed ONLY (instead of mixed with changes like
-#	that from `唵 n ng an" to `唵 an n ng").
+#	that from `唵 n ng an' to `唵 an n ng').
 
 import sys
 import sort_criteria
