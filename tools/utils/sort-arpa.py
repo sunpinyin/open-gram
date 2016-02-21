@@ -9,7 +9,7 @@ dicFiles = sys.argv[1 :] if len(sys.argv) > 1 else \
 	["../../lexicon/dict_head.utf8", "../../data/dict.full"]
 
 def proc_ngrams():
-	ngrams.sort(key = lambda ws: [dic.get(w) for w in ws])
+	ngrams.sort(key = lambda ws: [dic.get(w, -1) for w in ws])
 	sys.stdout.write("".join([" ".join(ws) for ws in ngrams]))
 	ngrams.clear()
 
