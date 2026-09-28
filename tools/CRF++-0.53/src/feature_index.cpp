@@ -171,7 +171,7 @@ void EncoderFeatureIndex::shrink(size_t freq) {
     const std::string &key = it->first;
 
     if (it->second.second >= freq) {
-      old2new.insert(std::make_pair<int, int>(it->second.first, new_maxid));
+      old2new.insert(std::make_pair(it->second.first, new_maxid));
       it->second.first = new_maxid;
       new_maxid += (key[0] == 'U' ? y_.size() : y_.size() * y_.size());
       ++it;

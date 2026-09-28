@@ -1,7 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from __future__ import with_statement
 import codecs
 import operator
 from optparse import OptionParser
@@ -17,7 +16,7 @@ def merge(in_fname, new_fname, out_fname):
         try:
             word = line.split(' ', 1)[0]
         except:
-            print line
+            print(line)
         existing_words.add(word)
         
     new_file = codecs.open(new_fname, 'r', 'utf-8')
@@ -39,8 +38,8 @@ def merge(in_fname, new_fname, out_fname):
                 continue
             else:
                 break
-        print w, py, freq
-        print >> out_file, w, py, freq
+        print(w, py, freq)
+        print(w, py, freq, file=out_file)
         
 if __name__ == '__main__':
     parser = OptionParser()

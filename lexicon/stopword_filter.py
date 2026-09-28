@@ -1,7 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- encoding: utf-8 -*-
 
-from __future__ import with_statement
 import codecs
 
 __all__ = ['is_not_stop_word',
@@ -20,9 +19,9 @@ class StopWordFilter(object):
                 if not line or line.startswith('#'):
                     continue
                 stopword, flag = line.split()
-                if flag == u'1':
+                if flag == '1':
                     self.postfix.append(stopword)
-                elif flag == u'0':
+                elif flag == '0':
                     self.prefix.append(stopword)
 
     def is_stop_word(self, word):

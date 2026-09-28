@@ -1,9 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from __future__ import with_statement
 import codecs
-import operator
+import functools
 from optparse import OptionParser
 
 def init_stroke_dict():
@@ -51,7 +50,7 @@ def should_ignore(char):
     http://www.unicode.org/charts/
     '''
     # cjk compatibility ideographs
-    if char > u'\uffff' or u'\uf900' <= char <= u'\ufaff':
+    if char > '\uffff' or '\uf900' <= char <= '\ufaff':
         return True
     else:
         return False
@@ -68,15 +67,16 @@ def main(input_f, output_f):
                 if len(word) == 1 and should_ignore(word[0]):
                     continue
                 words.append((word, py, freq))
-            except Exception, e:
-                print e, i, ':', line
+            except Exception as e:
+                print(e, i, ':', line)
 
-    print len(words), "to sort in", input_f
-    words.sort(key=operator.itemgetter(0), cmp=word_cmp)
-    
+    print(len(words), "to sort in", input_f)
+    word_key = functools.cmp_to_key(word_cmp)
+    words.sort(key=lambda item: word_key(item[0]))
+
     with codecs.open(output_f, 'w', 'utf-8') as f:
         for word, py, freq in words:
-            print >> f, word, py, freq
+            print(word, py, freq, file=f)
     
     
 if __name__ == '__main__':

@@ -47,7 +47,7 @@ crfpp_t* crfpp_new(int argc, char **argv) {
   return c;
 }
 
-crfpp_t* crfpp_new2(char *arg) {
+crfpp_t* crfpp_new2(const char *arg) {
   crfpp_t *c = new crfpp_t;
   CRFPP::Tagger *ptr = CRFPP::createTagger(arg);
   if (!c || !ptr) {

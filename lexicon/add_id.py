@@ -1,14 +1,13 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 
-from __future__ import with_statement
 import codecs
 from optparse import OptionParser
 
 def normalize_py(py):
     '''convert cc-cedicts py notation to that of sunpinyin
     '''
-    py = py.replace(u'üe', u'ue')
+    py = py.replace('üe', 'ue')
     if py.find(':') != -1:
         py = py.replace('u:e', 'ue')
         if py.endswith('u:'):
@@ -33,7 +32,7 @@ def main(fname_in, fname_out):
     for line in dict_in:
         word, syls = line.split(' ', 1)
         syls = ' '.join(normalize_pys(pys) for pys in syls.split())
-        print >> dict_out, word, index, syls
+        print(word, index, syls, file=dict_out)
         index += 1
 
 if __name__ == '__main__':

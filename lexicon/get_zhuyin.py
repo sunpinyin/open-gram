@@ -1,15 +1,15 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # coding: utf-8 
 
-from __future__ import with_statement
-from sgmllib import SGMLParser
-from HTMLParser import HTMLParser
-import urllib2, urllib, sys, codecs
-import htmlentitydefs
+from html.parser import HTMLParser
+import urllib.request
+import urllib.parse
+import sys
+import codecs
 
-class URLLister(SGMLParser):
+class URLLister(HTMLParser):
     def reset(self):       
-        SGMLParser.reset(self)
+        HTMLParser.reset(self)
         self.urls = []
         self.zhuyin = []
         self.data = []
@@ -17,6 +17,16 @@ class URLLister(SGMLParser):
         self.tn = 0
         self.intag = 0
         self.status = 0
+
+    def handle_starttag(self, tag, attrs):
+        method = getattr(self, 'start_' + tag, None)
+        if method is not None:
+            method(attrs)
+
+    def handle_endtag(self, tag):
+        method = getattr(self, 'end_' + tag, None)
+        if method is not None:
+            method()
 
     def start_a(self, attrs):
         href = [v for k, v in attrs if k=='href']
@@ -98,24 +108,26 @@ class HandianParser(HTMLParser):
         if self.in_tab and self.in_dict_py:
             self.dictpy.append(data)
             self.in_dict_py = False
-            
-    def handle_entityref(self, name):
-        if self.in_tab and self.in_dict_py:
-            print 'entity'
-            print name
-            name = name.lower()
-            self.handle_data(htmlentitydefs.entitydefs[name])
 
     def get_zhuyin(self):
         return self.dictpy
     
+def response_html(response):
+    """Return response body text for HTMLParser.feed."""
+    data = response.read()
+    headers = getattr(response, 'headers', None)
+    encoding = None
+    if headers is not None:
+        encoding = headers.get_content_charset()
+    return data.decode(encoding or 'utf-8')
+
 def post_zdic(zi):
     url = "http://www.zdic.net/search/default.asp"
-    search = urllib.urlencode([('q', zi)])
+    search = urllib.parse.urlencode([('q', zi)]).encode('ascii')
     #print search
     #exit(0)
-    req = urllib2.Request(url)
-    fd = urllib2.urlopen(req, search)
+    req = urllib.request.Request(url, data=search)
+    fd = urllib.request.urlopen(req)
     return fd
     while 1:
         data = fd.read(1024)
@@ -136,179 +148,179 @@ def get_hanzi_zhuyin():
     for line in inf:
         parser.reset()
         zi = line.strip()
-        parser.feed(post_zdic(zi).read())
+        parser.feed(response_html(post_zdic(zi)))
         zhuyins = parser.get_zhuyin()
         zhuyins = ' '.join(normalize_hanzi_zhuyin(zhuyin) for zhuyin in zhuyins)
         #zhuyins = ' '.join(zhuyins)
-        print zi, zhuyins
-        print >> out, zi, zhuyins
+        print(zi, zhuyins)
+        print(zi, zhuyins, file=out)
 
-vowels = {u'ā':'a1',
-          u'á':'a2',
-          u'ǎ':'a3',
-          u'à':'a4',
-          u'a':'a5',
+vowels = {'ā':'a1',
+          'á':'a2',
+          'ǎ':'a3',
+          'à':'a4',
+          'a':'a5',
           
-          u'ō':'o1',
-          u'ó':'o2',
-          u'ǒ':'o3',
-          u'ò':'o4',
+          'ō':'o1',
+          'ó':'o2',
+          'ǒ':'o3',
+          'ò':'o4',
           
-          u'ē':'e1',
-          u'é':'e2',
-          u'ě':'e3',
-          u'è':'e4',
+          'ē':'e1',
+          'é':'e2',
+          'ě':'e3',
+          'è':'e4',
         
-          u'āi':'ai1',
-          u'ái':'ai2',
-          u'ǎi':'ai3',
-          u'ài':'ai4',
+          'āi':'ai1',
+          'ái':'ai2',
+          'ǎi':'ai3',
+          'ài':'ai4',
           
-          u'ēi':'ei1',
-          u'éi':'ei2',
-          u'ěi':'ei3',
-          u'èi':'ei4',
+          'ēi':'ei1',
+          'éi':'ei2',
+          'ěi':'ei3',
+          'èi':'ei4',
           
-          u'āo':'ao1',
-          u'áo':'ao2',
-          u'ǎo':'ao3',
-          u'ào':'ao4',
+          'āo':'ao1',
+          'áo':'ao2',
+          'ǎo':'ao3',
+          'ào':'ao4',
 
-          u'ōu':'ou1',
-          u'óu':'ou2',
-          u'ǒu':'ou3',
-          u'òu':'ou4',
+          'ōu':'ou1',
+          'óu':'ou2',
+          'ǒu':'ou3',
+          'òu':'ou4',
           
-          u'ān':'an1',
-          u'án':'an2',
-          u'ǎn':'an3',
-          u'àn':'an4',
-          u'an':'an5',
+          'ān':'an1',
+          'án':'an2',
+          'ǎn':'an3',
+          'àn':'an4',
+          'an':'an5',
           
-          u'ēn':'en1',
-          u'én':'en2',
-          u'ěn':'en3',
-          u'èn':'en4',
+          'ēn':'en1',
+          'én':'en2',
+          'ěn':'en3',
+          'èn':'en4',
 
-          u'āng':'ang1',
-          u'áng':'ang2',
-          u'ǎng':'ang3',
-          u'àng':'ang4',
+          'āng':'ang1',
+          'áng':'ang2',
+          'ǎng':'ang3',
+          'àng':'ang4',
          
-          u'ēng':'eng1',
-          u'éng':'eng2',
-          u'ěng':'eng3',
-          u'èng':'eng4',
+          'ēng':'eng1',
+          'éng':'eng2',
+          'ěng':'eng3',
+          'èng':'eng4',
 
-          u'ēr':'er1',
-          u'ér':'er2',
-          u'ěr':'er3',
-          u'èr':'er4',
+          'ēr':'er1',
+          'ér':'er2',
+          'ěr':'er3',
+          'èr':'er4',
 
-          u'ī':'i1',
-          u'í':'i2',
-          u'ǐ':'i3',
-          u'ì':'i4',
+          'ī':'i1',
+          'í':'i2',
+          'ǐ':'i3',
+          'ì':'i4',
 
-          u'iā':'ia1',
-          u'iá':'ia2',
-          u'iǎ':'ia3',
-          u'ià':'ia4',
+          'iā':'ia1',
+          'iá':'ia2',
+          'iǎ':'ia3',
+          'ià':'ia4',
 
-          u'iē':'ie1',
-          u'ié':'ie2',
-          u'iě':'ie3',
-          u'iè':'ie4', 
+          'iē':'ie1',
+          'ié':'ie2',
+          'iě':'ie3',
+          'iè':'ie4', 
 
-          u'iāo':'iao1',
-          u'iáo':'iao2',
-          u'iǎo':'iao3',
-          u'iào':'iao4',
+          'iāo':'iao1',
+          'iáo':'iao2',
+          'iǎo':'iao3',
+          'iào':'iao4',
          
-          u'iū':'iu1',
-          u'iú':'iu2',
-          u'iǔ':'iu3',
-          u'iù':'iu4',
+          'iū':'iu1',
+          'iú':'iu2',
+          'iǔ':'iu3',
+          'iù':'iu4',
          
-          u'iān':'ian1',
-          u'ián':'ian2',
-          u'iǎn':'ian3',
-          u'iàn':'ian4',
+          'iān':'ian1',
+          'ián':'ian2',
+          'iǎn':'ian3',
+          'iàn':'ian4',
          
-          u'īn':'in1',
-          u'ín':'in2',
-          u'ǐn':'in3',
-          u'ìn':'in4',
+          'īn':'in1',
+          'ín':'in2',
+          'ǐn':'in3',
+          'ìn':'in4',
          
-          u'iāng':'iang1',
-          u'iáng':'iang2',
-          u'iǎng':'iang3',
-          u'iàng':'iang4',
+          'iāng':'iang1',
+          'iáng':'iang2',
+          'iǎng':'iang3',
+          'iàng':'iang4',
          
-          u'īng':'ing1',
-          u'íng':'ing2',
-          u'ǐng':'ing3',
-          u'ìng':'ing4',
+          'īng':'ing1',
+          'íng':'ing2',
+          'ǐng':'ing3',
+          'ìng':'ing4',
          
-          u'ū':'u1',
-          u'ú':'u2',
-          u'ǔ':'u3',
-          u'ù':'u4',
+          'ū':'u1',
+          'ú':'u2',
+          'ǔ':'u3',
+          'ù':'u4',
          
-          u'uā':'ua1',
-          u'uá':'ua2',
-          u'uǎ':'ua3',
-          u'uà':'ua4',
+          'uā':'ua1',
+          'uá':'ua2',
+          'uǎ':'ua3',
+          'uà':'ua4',
          
-          u'uō':'uo1',
-          u'uó':'uo2',
-          u'uǒ':'uo3',
-          u'uò':'uo4',
+          'uō':'uo1',
+          'uó':'uo2',
+          'uǒ':'uo3',
+          'uò':'uo4',
          
-          u'uāi':'uai1',
-          u'uái':'uai2',
-          u'uǎi':'uai3',
-          u'uài':'uai4',
+          'uāi':'uai1',
+          'uái':'uai2',
+          'uǎi':'uai3',
+          'uài':'uai4',
          
-          u'uī':'ui1',
-          u'uí':'ui2',
-          u'uǐ':'ui3',
-          u'uì':'ui4',
+          'uī':'ui1',
+          'uí':'ui2',
+          'uǐ':'ui3',
+          'uì':'ui4',
          
-          u'uān':'uan1',
-          u'uán':'uan2',
-          u'uǎn':'uan3',
-          u'uàn':'uan4',
+          'uān':'uan1',
+          'uán':'uan2',
+          'uǎn':'uan3',
+          'uàn':'uan4',
 
-          u'ūn':'un1',
-          u'ún':'un2',
-          u'ǔn':'un3',
-          u'ùn':'un4',
+          'ūn':'un1',
+          'ún':'un2',
+          'ǔn':'un3',
+          'ùn':'un4',
          
-          u'uāng':'uang1',
-          u'uáng':'uang2',
-          u'uǎng':'uang3',
-          u'uàng':'uang4',
+          'uāng':'uang1',
+          'uáng':'uang2',
+          'uǎng':'uang3',
+          'uàng':'uang4',
          
-          u'ōng':'ong1',
-          u'óng':'ong2',
-          u'ǒng':'ong3',
-          u'òng':'ong4',
+          'ōng':'ong1',
+          'óng':'ong2',
+          'ǒng':'ong3',
+          'òng':'ong4',
 
-          u'uē':'ue1',
-          u'ué':'ue2',
-          u'uě':'ue3',
-          u'uè':'ue4',
+          'uē':'ue1',
+          'ué':'ue2',
+          'uě':'ue3',
+          'uè':'ue4',
          
-          u'iōng':'iong1',
-          u'ióng':'iong2',
-          u'iǒng':'iong3',
-          u'iòng':'iong4',
+          'iōng':'iong1',
+          'ióng':'iong2',
+          'iǒng':'iong3',
+          'iòng':'iong4',
 
-          u'ǖ':'v1',
-          u'ǘ':'v2',
-          u'ǚ':'v3',
-          u'ǜ':'v4'
+          'ǖ':'v1',
+          'ǘ':'v2',
+          'ǚ':'v3',
+          'ǜ':'v4'
          }
 
 def normalize_word_zhuyin(zhuyin):
@@ -326,7 +338,7 @@ def seek_to_last_word(input, output):
         last_word, py = line.split(' ', 1)
     if last_word is None:
         return
-    print last_word, py                                                                                        
+    print(last_word, py)
     for line in input:
         word, py = line.split(' ', 1)
         if word == last_word:
@@ -341,18 +353,18 @@ def validate_words():
         parser.reset()
         word, py, freq = line.strip().split()
         if len(word) > 1:
-            parser.feed(post_zdic(word).read())
+            parser.feed(response_html(post_zdic(word)))
             zhuyins = parser.get_zhuyin()
             if zhuyins:
                 zhuyin = zhuyins[0].strip()
                 zhuyin = "'".join(normalize_word_zhuyin(py) for py in zhuyin.split())
                 if zhuyin != py:
-                    print word, ":", zhuyin, "!=", py
+                    print(word, ":", zhuyin, "!=", py)
                     py = zhuyin
             else:
-                print word, 'not found in zdic'
-        print word, py, freq
-        print >> out, word, py, freq
+                print(word, 'not found in zdic')
+        print(word, py, freq)
+        print(word, py, freq, file=out)
         
     #print >> out, zi, zhuyins
     
@@ -366,12 +378,10 @@ def get_zi():
                 if wds[2] == '?':
                     yins = main_handle(wds[0])
                     yin = '\''.join(yins)
-                    print '%s %s %s' % (wds[0], wds[1], yin)
+                    print('%s %s %s' % (wds[0], wds[1], yin))
         f.close()
     except:
-        print 'can not open file:shengdiao.unKnow.utf8'
+        print('can not open file:shengdiao.unKnow.utf8')
 
 if __name__ == '__main__':
-    reload(sys)
-    sys.setdefaultencoding('utf-8')
     get_hanzi_zhuyin()

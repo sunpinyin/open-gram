@@ -1,7 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from __future__ import with_statement
 import codecs
 import operator
 from optparse import OptionParser
@@ -22,8 +21,8 @@ def shrink(in_fname, out_fname):
             pass
         else:
             words_out += 1
-            print >> out_file, word, ' '.join(py)
-    print "%d => %d" % (words_in, words_out)
+            print(word, ' '.join(py), file=out_file)
+    print("%d => %d" % (words_in, words_out))
     
 if __name__ == '__main__':
     parser = OptionParser()

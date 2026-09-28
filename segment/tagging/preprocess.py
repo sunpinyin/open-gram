@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- encoding: utf-8 -*-
 
 #
@@ -18,7 +18,6 @@
 # 6. put a newline after each punctuation of it
 # 7. replace successive newlines with one newline
 
-from __future__ import with_statement
 import sys
 import codecs
 from hanzi_util import is_terminator, is_punct, is_zh
@@ -46,7 +45,7 @@ def split_into_sentences(line):
         elif is_zh(c):
             close_token(en_token)
             tokens.append(c)
-        elif c == u' ' or c == u'\t':
+        elif c == ' ' or c == '\t':
             close_token(en_token)
         else:
             en_token.append(c)
@@ -55,8 +54,8 @@ def split_into_sentences(line):
 
 def is_ascii_line(line):
     try:
-        line.decode('ascii')
-    except (UnicodeEncodeError, UnicodeDecodeError):
+        line.encode('ascii')
+    except UnicodeEncodeError:
         return False
     else:
         return True
@@ -69,8 +68,8 @@ def process(input):
             yield sentence
 
 def print_sentence(sentence):
-    s = u' '.join(sentence)
-    print s.encode('utf-8')
+    s = ' '.join(sentence)
+    print(s)
     
 if __name__ == "__main__":
     for fn in sys.argv[1:]:

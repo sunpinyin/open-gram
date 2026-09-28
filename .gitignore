@@ -9,4 +9,5 @@ build/*
 *.o
 *.lo
 *.la
+*.so
 *.log

@@ -1,7 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- encoding: utf-8 -*-
 
-from __future__ import with_statement
 import codecs
 import os, sys
 from optparse import OptionParser

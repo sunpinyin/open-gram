@@ -1,7 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- encoding: utf-8 -*-
 
-from __future__ import with_statement
 import sqlite3
 import collections
 from operator import itemgetter
@@ -21,11 +20,11 @@ class WordFreqDB(object):
         
     def keys(self):
         GET_KEYS = 'SELECT word FROM words ORDER BY ROWID'
-        return map(itemgetter(0), self.conn.cursor().execute(GET_KEYS))
+        return list(map(itemgetter(0), self.conn.cursor().execute(GET_KEYS)))
 
     def values(self):
         GET_VALUES = 'SELECT freq FROM words ORDER BY ROWID'
-        return map(itemgetter(0), self.conn.cursor().execute(GET_VALUES))
+        return list(map(itemgetter(0), self.conn.cursor().execute(GET_VALUES)))
 
     def items(self):
         GET_ITEMS = 'SELECT word, freq FROM words ORDER BY ROWID'
@@ -91,11 +90,11 @@ if __name__ == "__main__":
 
     if opts.list:
         for w in db.keys():
-            print w
-    
+            print(w)
+
     if opts.query:
-        query = opts.query.decode('utf-8')
+        query = opts.query
         if query in db:
-            print opts.query, 'found in', fname
+            print(opts.query, 'found in', fname)
         else:
-            print opts.query, 'not found in', fname
+            print(opts.query, 'not found in', fname)

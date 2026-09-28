@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 char_set= set()
 term_set = set()
@@ -22,11 +22,11 @@ def check():
     for ch, term in term_set:
         # print 'checking %s' % ch.encode('utf8')
         if not ch in char_set:
-            print('%s missing, in term %s' % (ch.encode('utf8'), term.encode('utf8')))
+            print('%s missing, in term %s' % (ch, term))
     print('done')
 
 def parse_line(line):
-    fields = unicode(line[:-1], 'utf8').split(u' ')
+    fields = line[:-1].split(' ')
     pylist = []
     for field in fields[1:]:
         pos = field.find(':')
@@ -37,7 +37,7 @@ def parse_line(line):
     return fields[0], pylist
 
 def main():
-    with file('dict.full', 'r') as f:
+    with open('dict.full', 'r', encoding='utf-8') as f:
         for line in f:
             term, pylist = parse_line(line)
             append(term, pylist)

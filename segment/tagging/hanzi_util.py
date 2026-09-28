@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- encoding: utf-8 -*-
 
 from curses import ascii
@@ -47,18 +47,18 @@ def is_punct(ch):
         return False
 
 def is_terminator(ch):
-    return ch in (u'!', u'?', u',', u';', u'.', u'！', u'？', u'，', u'。', u'…')
+    return ch in ('!', '?', ',', ';', '.', '！', '？', '，', '。', '…')
 
-chinese_number = (u'十', u'百', u'千', u'万', u'亿', u'一', u'二', u'三', u'四', u'五', u'六', u'七', u'八', u'九', u'零', u'几')
+chinese_number = ('十', '百', '千', '万', '亿', '一', '二', '三', '四', '五', '六', '七', '八', '九', '零', '几')
 def is_zh_number(ch):
     return ch in chinese_number
 
 if __name__ == "__main__":
-    s = u"hehe, 我爱北京天安门。"
-    predicates = {u'zh':is_zh,
-                  u'punct':is_punct,
-                  u'term':is_terminator}
+    s = "hehe, 我爱北京天安门。"
+    predicates = {'zh':is_zh,
+                  'punct':is_punct,
+                  'term':is_terminator}
     fmt_str = ' %2s  %-7s  %-7s  %-7s'
-    print fmt_str % tuple(['char']+predicates.keys())
+    print(fmt_str % tuple(['char'] + list(predicates.keys())))
     for c in s:
-        print fmt_str % tuple([c] + [str(pred(c)) for pred in predicates.values()])
+        print(fmt_str % tuple([c] + [str(pred(c)) for pred in predicates.values()]))

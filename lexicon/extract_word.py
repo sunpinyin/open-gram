@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- encoding: utf-8 -*-
 
 #
@@ -6,9 +6,7 @@
 #
 # the output will be list of (word, freq)
 
-from __future__ import with_statement
-import codecs
-import os, sys
+import os
 from optparse import OptionParser
 import logging
 
@@ -29,19 +27,18 @@ class WordExtractor(object):
     def __call__(self, words):
         self.process_words(words, threshold=2560000)
         
-    def process_files(files):
-        """process file in batch
-        """
-        for fn in files:
-            with codecs.open(fn, 'r', 'utf-8') as f:
+    def process_files(self, files):
+        for path in files:
+            with open(path, encoding="utf-8") as f:
                 self.process_file(f)
 
     def process_file(self, input_file):
-        """process segmented file
-        """
-        words = set()
-        for line in input_file:
-            words.add(set(line.split(u'/')))
+        words = {
+            word
+            for line in input_file
+            for word in line.strip().split("/")
+            if word
+        }
         self.process_words(words)
 
     def process_words(self, words, threshold=30000):

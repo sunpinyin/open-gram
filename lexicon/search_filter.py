@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 
 #
@@ -6,10 +6,9 @@
 #
 # if the frequency of occurence of a given words is higher than a threshold,
 # then we think it is a popular word
-# 
-
-from __future__ import with_statement
-import urllib, urllib2
+import urllib.parse
+import urllib.request
+import urllib.error
 import re
 import sys, os
 import codecs
@@ -30,7 +29,7 @@ class BlockedException(Exception):
 class SearchEngine(object):
     def choose_ip(self):
         # TODO: should be round-robin, and mark those banned IPs with lower priority
-        return random.choice(filter(lambda ip: self.ips[ip] == 0, self.ips))
+        return random.choice(list(filter(lambda ip: self.ips[ip] == 0, self.ips)))
 
     def remove_ip(self, ip):
         self.ips[ip] = 1
@@ -58,26 +57,26 @@ class Baidu(SearchEngine):
            "202.108.22.43":0,
            "220.181.38.4":0,
            "119.75.216.30":0}
-    re_hit = re.compile(u"找到相关结果约?([0-9\,]+)个")
-    re_miss = re.compile(u"没有找到与.*相关的网页")
+    re_hit = re.compile(r"找到相关结果约?([0-9\,]+)个")
+    re_miss = re.compile("没有找到与.*相关的网页")
     encoding = "gbk"
     
     def build_url(self, query):
-        param = urllib.urlencode({'wd':'"%s"'%query.encode('utf-8'), 'ie':'utf-8'})
+        param = urllib.parse.urlencode({'wd': '"%s"' % query, 'ie': 'utf-8'})
         ip = self.choose_ip()
         return self.url % (ip, param), ip
 
 class BaiduDict(SearchEngine):
     url = "http://%s/s?%s"
     ips = {"220.181.50.93":0}
-    re_miss = re.compile(u"未找到和您的关键词")
+    re_miss = re.compile("未找到和您的关键词")
     encoding = 'gbk'
     
     def build_url(self, query):
-        param = urllib.urlencode({'wd':'"%s"'%query.encode('utf-8'), 'ie':'utf-8'})
+        param = urllib.parse.urlencode({'wd': '"%s"' % query, 'ie': 'utf-8'})
         ip = self.choose_ip()
         return self.url % (ip, param), ip
-    
+
     def get_freq(self, result):
         return 0 if self.is_miss(result) else 1
 
@@ -115,13 +114,13 @@ class Google(SearchEngine):
         "72.14.235.147":0,
         "74.125.19.147":0,
         "74.125.19.103":0}
-    re_hit = re.compile (u"获得约 <b>([0-9\,]+)</b> 条结果")
-    re_miss = re.compile(u"未找到符合.*的结果")
+    re_hit = re.compile(r"获得约 <b>([0-9\,]+)</b> 条结果")
+    re_miss = re.compile("未找到符合.*的结果")
     encoding = "utf-8"
     
     def build_url(self, query):
-        #query = urllib2.quote(query.encode('utf-8'))
-        param = urllib.urlencode({'as_epq': query.encode('utf-8'),
+        #query = urllib.parse.quote(query)
+        param = urllib.parse.urlencode({'as_epq': query,
                                   'ie':'utf-8',
                                   'oe':'utf-8',
                                   'hl':'zh_CN',
@@ -142,16 +141,16 @@ class SearchEngineFilter(object):
         while True:
             try:
                 url, ip = self.se.build_url(word)
-                req = urllib2.Request (url, headers=self.http_headers)
-                f = urllib2.urlopen (req)
-                page = "".join(f.readlines())
-                lines = unicode(page, self.se.encoding, errors='ignore')
+                req = urllib.request.Request(url, headers=self.http_headers)
+                f = urllib.request.urlopen(req)
+                page = f.read()
+                lines = page.decode(self.se.encoding, errors='ignore')
                 return self.se.get_freq(lines)
-            except urllib2.URLError,e:
+            except urllib.error.URLError as e:
                 # this ip is not accessible
                 self.se.remove_ip(ip)
-            except UnicodeDecodeError,e:
-                with open('/tmp/dump.html', mode='w') as f:
+            except UnicodeDecodeError as e:
+                with open('/tmp/dump.html', mode='wb') as f:
                     f.write(page)
 
 def get_search_engine(engine='baidu'):
@@ -187,11 +186,11 @@ def judge_words(undetermined_words, output, threshold):
         return False
     
     for word, py, freq in undetermined_words:
-        print u'freq[%s] = %d, is smaller than %d. keep it? [Y/n]' % (word, freq, threshold)
-        answer = raw_input()
+        print('freq[%s] = %d, is smaller than %d. keep it? [Y/n]' % (word, freq, threshold))
+        answer = input()
         if answer in ('', 'y'):
-            print 'adding', word
-            print >> output, word, py
+            print('adding', word)
+            print(word, py, file=output)
     return True
 
 def filter_dict(filename, output_filename, threshold = 30000):
@@ -210,14 +209,14 @@ def filter_dict(filename, output_filename, threshold = 30000):
         else:
             freq = get_word_freq(word)
             if freq == 0:
-                print 'removing', word
+                print('removing', word)
                 continue
-        print 'adding', word
-        print >> output, word, py
+        print('adding', word)
+        print(word, py, file=output)
 
     with codecs.open('./waiting_list.txt', 'w', 'utf-8') as waiting_list:
         for word, py, freq in undetermined_words:
-            print >> waiting_list, word, py, freq
+            print(word, py, freq, file=waiting_list)
             
 def filter_list(filename, output_filename, threshold = 30000):
     f = codecs.open(filename, 'r', 'utf-8')
@@ -239,23 +238,23 @@ def filter_list(filename, output_filename, threshold = 30000):
                 keep_it = True
             elif freq == 0:
                 keep_it = False
-                print 'removing', word
+                print('removing', word)
             else:
-                print 'put', word, 'into waiting list'
+                print('put', word, 'into waiting list')
                 undetermined_words.append((word, freq))
-        
+
         if keep_it:
-            print 'adding', word
-            print >> output, word, freq
+            print('adding', word)
+            print(word, freq, file=output)
 
     with codecs.open('/tmp/waiting_list.txt', 'w', 'utf-8') as waiting_list:
         for word, freq in undetermined_words:
-            print >> waiting_list, word, freq
+            print(word, freq, file=waiting_list)
 
 def test_get_freq():
     google_filter = SearchEngineFilter(Google())
-    for word in [u'人间', u'大炮']:
-        print word, ':', google_filter.get_freq(word)
+    for word in ['人间', '大炮']:
+        print(word, ':', google_filter.get_freq(word))
 
 if __name__ == "__main__":
     #filter_dict('dict.utf8', 'dict.filter-30000.utf-8')

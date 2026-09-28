@@ -1,9 +1,8 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 # a script to extract syllable from cedict to sunpinyin lexicon format
 
 
-#from __future__ import with_statement
 import sys
 import codecs
 import re
@@ -21,13 +20,13 @@ def normalize_pinyins(pinyins):
     """lower case all pinyins, and remove the tones. if there is no tone, simply raise an exception
     """
     def normalize(py):
-        tones = (u'1', u'2', u'3', u'4', u'5')
+        tones = ('1', '2', '3', '4', '5')
         if py[-1] not in tones:
             raise Exception("not a pinyin: %s" % py)
         return py[:-1].lower()
     return "'".join(normalize(py) for py in pinyins.split())
     
-cedict_pattern = re.compile('\S+ (\S+) \[([^\]]+)\].*')
+cedict_pattern = re.compile(r'\S+ (\S+) \[([^\]]+)\].*')
 
 def transform(line, dump_func):
     try:
@@ -40,10 +39,10 @@ def dump(cedict_fname, dump_func):
     try:
         cedict_file = codecs.open(cedict_fname, "r", "utf-8")
     except:
-        print >> sys.stderr, "failed to open %s" % cedict_fname
+        print("failed to open %s" % cedict_fname, file=sys.stderr)
         sys.exit(1)
     for line in cedict_file:
-        if line.startswith(u'#'): continue
+        if line.startswith('#'): continue
         transform(line, dump_func)
     cedict_file.close()
 
@@ -53,7 +52,7 @@ def dump_to_file(filename):
     else:
         f = codecs.open(filename, 'a', 'utf-8')
     def dump_func(sc_word, pinyins):
-        print >> f, sc_word, pinyins
+        print(sc_word, pinyins, file=f)
     return dump_func
 
 def dump_to_db(filename):
@@ -83,7 +82,7 @@ if __name__ == "__main__":
         cedict_fname = args[0]
     else:
         default_cedict = '../data/cedict_1_0_ts_utf-8_mdbg.txt'
-        print >> sys.stderr, 'using %s as the dict' % default_cedict
+        print('using %s as the dict' % default_cedict, file=sys.stderr)
         cedict_fname = default_cedict
 
     if opts.output:

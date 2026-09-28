@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 
@@ -6,15 +6,14 @@ the PinYinDict is generated from xyb's pinyin_zopeext.py, using:
 
 >>> f = open('tt', 'w')
 >>> for (k, v) in pinyin_zopeext.pinyinDict.items():
-...     f.write( u"'%s':%s, \n" %(k, str(tuple(v.split(' '))) ) )
+...     f.write( "'%s':%s, \n" %(k, str(tuple(v.split(' '))) ) )
 ...
 >>> f.close()
 
 Author: Junyong Pan from zopen.cn, panjy at zopen dot cn
 """
 
-from __future__ import with_statement
-import urllib, urllib2
+import urllib
 import re
 import sys, os
 import codecs
@@ -6804,7 +6803,7 @@ PinYinDict.update({
 '》':('',),
 })
 
-PinYinDict = dict([( ord(k.decode('utf-8')), v[0].decode('utf-8')) for k, v in PinYinDict.items()])
+PinYinDict = dict((ord(k), v[0]) for k, v in PinYinDict.items())
 
 def hanzi2pinyin(hz):
     char_ord = ord(hz)
@@ -6823,6 +6822,6 @@ if __name__ == '__main__':
         with codecs.open('/tmp/py_new.utf8', 'w', 'utf-8') as out:
             for line in f:
                 word = line.strip()
-                print >> out, word, word2pinyin(word)
+                print(word, word2pinyin(word), file=out)
 
             

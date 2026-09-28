@@ -1,6 +1,5 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
-from __future__ import with_statement
 import sys, errno
 import os
 import codecs
@@ -19,14 +18,14 @@ class CRFPP(object):
     def segment(self, tokens):
         self.tagger.clear()
         for token in tokens:
-            self.tagger.add(token.encode('utf-8'))
+            self.tagger.add(token)
         logging.debug("column size: %d" % self.tagger.xsize())
         logging.debug("token size: %d" % self.tagger.size())
         logging.debug("tag size: %d" % self.tagger.ysize())
         self.tagger.parse()
         words = []
         word = []
-        for i in xrange(self.tagger.size() - 1):
+        for i in range(self.tagger.size() - 1):
             tag = self.tagger.y2(i)
             if tag in ('B', 'S') and word:
                 words.append(''.join(word))
@@ -48,7 +47,7 @@ def process_file(segment, filename):
 def makedir(dirname):
     try:
         os.makedirs(dirname)
-    except OSError, e:
+    except OSError as e:
         if e.errno == errno.EEXIST:
             pass
         else:
@@ -60,8 +59,8 @@ def make_output_dir(in_basedir, dirname, output_base):
     return output_dir
         
 
-def print_words(words, delimeter=u'/'):
-    print delimeter.join(words)
+def print_words(words, delimeter='/'):
+    print(delimeter.join(words))
 
 def process_dir(segment, input_dir, dump_func=print_words):
     for root, dirs, files in os.walk(input_dir):
